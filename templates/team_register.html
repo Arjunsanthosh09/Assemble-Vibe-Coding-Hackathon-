@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register Team — ASSEMBLE</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/registration-flow.css') }}">
+</head>
+<body>
+  <header class="flow-nav">
+    <a href="{{ url_for('index') }}" class="dash-brand"><span class="brand-signal"></span>ASSEMBLE</a>
+    <a href="{{ url_for('dashboard') }}" class="back-dashboard">← Dashboard</a>
+  </header>
+
+  <main class="flow-shell">
+    <section class="flow-intro">
+      <span class="flow-kicker">Squad Protocol / Step 01</span>
+      <h1>Assemble Your <em>Team</em></h1>
+      <p>Set your squad identity and enter the remaining teammates. Your logged-in account is automatically assigned as the team leader.</p>
+    </section>
+
+    <div class="flow-progress" aria-label="Registration progress">
+      <div class="flow-step active"><span>01</span><div><small>Current</small><strong>Team Details</strong></div></div>
+      <div class="flow-line"></div>
+      <div class="flow-step"><span>02</span><div><small>Next</small><strong>Payment</strong></div></div>
+      <div class="flow-line"></div>
+      <div class="flow-step"><span>03</span><div><small>Final</small><strong>Submission</strong></div></div>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flash-stack">
+          {% for category, message in messages %}<div class="flash-message {{ category }}">{{ message }}</div>{% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <form class="flow-layout" method="post" action="{{ url_for('register_team') }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+      <div class="flow-main">
+        <section class="flow-card">
+          <div class="card-heading"><span>01</span><div><small>Squad Identity</small><h2>Team Information</h2></div></div>
+
+          <div class="flow-field-grid two">
+            <label class="flow-field">
+              <span>Team Name</span>
+              <input type="text" name="team_name" value="{{ request.form.get('team_name', '') }}" placeholder="e.g. Code Avengers" minlength="2" maxlength="100" required>
+              <small>Must be unique across the hackathon.</small>
+            </label>
+
+            <label class="flow-field">
+              <span>Total Team Members</span>
+              <select name="total_members" id="total-members" required>
+                {% set selected_size = request.form.get('total_members', '1') %}
+                <option value="1" {{ 'selected' if selected_size == '1' else '' }}>1 — Leader only</option>
+                <option value="2" {{ 'selected' if selected_size == '2' else '' }}>2 — Leader + 1 member</option>
+                <option value="3" {{ 'selected' if selected_size == '3' else '' }}>3 — Leader + 2 members</option>
+              </select>
+              <small>Maximum three, including the leader.</small>
+            </label>
+          </div>
+
+          <div class="flow-field-grid">
+            <label class="flow-field">
+              <span>Challenge Domain</span>
+              <select name="project_domain" required>
+                <option value="">Select your domain</option>
+                {% for domain in ['AI & Machine Learning', 'HealthTech', 'Climate & Sustainability', 'Open Innovation'] %}
+                  <option value="{{ domain }}" {{ 'selected' if request.form.get('project_domain') == domain else '' }}>{{ domain }}</option>
+                {% endfor %}
+              </select>
+              <small>Your team does not need to disclose its project title or idea during registration.</small>
+            </label>
+          </div>
+        </section>
+
+        <section class="flow-card">
+          <div class="card-heading"><span>02</span><div><small>Squad Roster</small><h2>Member Details</h2></div></div>
+
+          <div class="leader-summary">
+            <div class="leader-avatar">{{ leader.full_name[0] | upper }}</div>
+            <div><small>Member 1 · Team Leader</small><h3>{{ leader.full_name }}</h3><p>{{ session.get('user_email') }} · {{ leader.college_name }}</p></div>
+            <span class="locked-chip">Account verified</span>
+          </div>
+
+          {% for number in [2, 3] %}
+            <div class="member-form" data-member="{{ number }}" hidden>
+              <div class="member-title"><span>0{{ number }}</span><div><small>Additional Teammate</small><h3>Member {{ number }}</h3></div></div>
+
+              <div class="flow-field-grid two">
+                <label class="flow-field"><span>Full Name</span><input type="text" name="member_{{ number }}_name" value="{{ request.form.get('member_' ~ number ~ '_name', '') }}" placeholder="Member's full name" data-required></label>
+                <label class="flow-field"><span>Email Address</span><input type="email" name="member_{{ number }}_email" value="{{ request.form.get('member_' ~ number ~ '_email', '') }}" placeholder="member@college.edu" data-required></label>
+              </div>
+
+              <div class="flow-field-grid two">
+                <label class="flow-field"><span>Contact Number</span><input type="tel" name="member_{{ number }}_phone" value="{{ request.form.get('member_' ~ number ~ '_phone', '') }}" placeholder="10-digit mobile" pattern="[6-9][0-9]{9}" maxlength="10" data-required></label>
+                <label class="flow-field"><span>College / University</span><input type="text" name="member_{{ number }}_college" value="{{ request.form.get('member_' ~ number ~ '_college', '') }}" placeholder="Institute name" data-required></label>
+              </div>
+
+              <div class="flow-field-grid two">
+                <label class="flow-field"><span>Course</span><input type="text" name="member_{{ number }}_course" value="{{ request.form.get('member_' ~ number ~ '_course', '') }}" placeholder="e.g. MCA, B.Tech" data-required></label>
+                <label class="flow-field"><span>Year of Study</span><select name="member_{{ number }}_year" data-required><option value="">Select year</option>{% for year in ['First Year', 'Second Year', 'Third Year', 'Fourth Year', 'Other'] %}<option value="{{ year }}" {{ 'selected' if request.form.get('member_' ~ number ~ '_year') == year else '' }}>{{ year }}</option>{% endfor %}</select></label>
+              </div>
+            </div>
+          {% endfor %}
+        </section>
+
+        <div class="form-actions">
+          <a href="{{ url_for('dashboard') }}" class="flow-button secondary">Save Later</a>
+          <button type="submit" class="flow-button primary">Save Team & Continue <span>→</span></button>
+        </div>
+      </div>
+
+      <aside class="flow-aside">
+        <div class="aside-card sticky-card">
+          <span class="aside-kicker">Mission Rules</span>
+          <h2>Before You Continue</h2>
+          <ul class="rule-list">
+            <li><span>01</span>Maximum three members including the leader.</li>
+            <li><span>02</span>Each member must have a unique email address.</li>
+            <li><span>03</span>The team name must not already be registered.</li>
+            <li><span>04</span>Team details cannot be changed after payment approval.</li>
+          </ul>
+          <div class="aside-note"><strong>Next:</strong> The official payment QR and screenshot-upload form will appear after saving.</div>
+        </div>
+      </aside>
+    </form>
+  </main>
+
+  <script src="{{ url_for('static', filename='js/registration-flow.js') }}"></script>
+</body>
+</html>

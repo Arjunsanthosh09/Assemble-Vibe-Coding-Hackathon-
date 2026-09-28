@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registration Submitted — ASSEMBLE</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}"><link rel="stylesheet" href="{{ url_for('static', filename='css/registration-flow.css') }}">
+</head>
+<body>
+  <header class="flow-nav"><a href="{{ url_for('index') }}" class="dash-brand"><span class="brand-signal"></span>ASSEMBLE</a><a href="{{ url_for('dashboard') }}" class="back-dashboard">Dashboard →</a></header>
+  <main class="complete-shell">
+    <div class="complete-signal {{ payment.payment_status }}"><span>{{ '✓' if payment.payment_status == 'approved' else '!' if payment.payment_status == 'rejected' else '◎' }}</span></div>
+    <span class="flow-kicker">Squad Protocol / Submission Received</span>
+    <h1>{{ 'Registration Approved' if payment.payment_status == 'approved' else 'Payment Needs Attention' if payment.payment_status == 'rejected' else 'Team Submitted' }}</h1>
+    <p class="complete-lead">{% if payment.payment_status == 'approved' %}Your team is officially registered for ASSEMBLE.{% elif payment.payment_status == 'rejected' %}Your payment proof was rejected. Review the reason and upload it again.{% else %}Your details and payment proof were received. The admin team will verify the payment before final approval.{% endif %}</p>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}{% for category, message in messages %}<div class="flash-message {{ category }}">{{ message }}</div>{% endfor %}{% endwith %}
+
+    <section class="complete-card">
+      <div class="complete-head"><div><small>Squad Identity</small><h2>{{ team.team_name }}</h2><p>{{ team.project_domain }}</p></div><span class="status-chip {{ payment.payment_status }}">{{ payment.payment_status | title }}</span></div>
+      <div class="complete-grid"><div><small>Team ID</small><strong>#ASM-{{ '%04d' | format(team.id) }}</strong></div><div><small>Transaction ID</small><strong>{{ payment.transaction_id }}</strong></div><div><small>Amount</small><strong>₹{{ payment.amount | int }}</strong></div></div>
+      <div class="member-list"><h3>Registered Members</h3>{% for member in members %}<div class="registered-member"><span>{{ member.member_name[0] | upper }}</span><div><strong>{{ member.member_name }}</strong><small>{{ member.email }}</small></div>{% if member.is_team_leader %}<em>Leader</em>{% endif %}</div>{% endfor %}</div>
+      {% if payment.payment_status == 'rejected' %}<div class="rejection-reason"><strong>Reason:</strong> {{ payment.rejection_reason or 'Invalid payment proof.' }}</div><a class="flow-button primary full-button" href="{{ url_for('payment') }}">Upload Payment Again →</a>{% elif payment.payment_status == 'approved' %}<div class="approved-actions"><a class="flow-button primary full-button" href="{{ url_for('payment_receipt') }}">View & Download Payment Receipt →</a><a class="flow-button secondary full-button" href="{{ url_for('dashboard') }}">Return to Dashboard</a></div>{% else %}<a class="flow-button primary full-button" href="{{ url_for('dashboard') }}">Return to Dashboard →</a>{% endif %}
+    </section>
+  </main>
+</body>
+</html>

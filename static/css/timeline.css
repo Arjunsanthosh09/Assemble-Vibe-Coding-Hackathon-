@@ -1,0 +1,386 @@
+/* ============================================================
+   TIMELINE SECTION — timeline.css
+   ============================================================ */
+
+:root{
+  --tl-bg:      var(--bg, #0a0a0d);
+  --tl-blood:   var(--blood, #e0293e);
+  --tl-amber:   var(--amber, #f2a541);
+  --tl-text:    var(--text, #eee9e4);
+  --tl-muted:   var(--muted, #9a949c);
+  --tl-line:    var(--panel-line, #232028);
+}
+
+#timeline{
+  position:relative;
+  overflow:hidden;
+  background:var(--tl-bg);
+  padding:100px 0 90px;
+}
+
+/* ============================================================ */
+/* TIMELINE BACKGROUND IMAGE                                     */
+/* ============================================================ */
+
+.timeline-bg-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.timeline-bg-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+/* Lighter overlay on the image for better visibility */
+.timeline-bg-image::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 10, 13, 0.35); /* Made lighter - was 0.6 */
+  pointer-events: none;
+}
+
+/* ============================================================ */
+/* LIGHTRAYS / HYPERSPEED BACKGROUND                             */
+/* ============================================================ */
+
+.hyperspeed-bg{
+  position:absolute;
+  inset:0;
+  z-index:0;
+  opacity:0.5;
+  pointer-events:none;
+}
+.hyperspeed-bg canvas{
+  display:block;
+  width:100%;
+  height:100%;
+}
+
+/* ============================================================ */
+/* DARK SCRIM - MADE LIGHTER                                    */
+/* ============================================================ */
+#timeline::after{
+  content:"";
+  position:absolute; 
+  inset:0;
+  z-index:1;
+  background:
+    linear-gradient(180deg, rgba(10,10,13,0.2) 0%, rgba(10,10,13,0.4) 40%, rgba(10,10,13,0.6) 100%),
+    radial-gradient(60% 50% at 15% 15%, rgba(224,41,62,0.05), transparent 70%);
+  pointer-events:none;
+}
+
+/* ============================================================ */
+/* FLOATING LINES BACKGROUND                                     */
+/* ============================================================ */
+.floating-lines-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.7; /* Increased for more visibility */
+}
+
+.floating-lines-bg canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ============================================================ */
+/* WRAP - CONTENT SITS ON TOP                                   */
+/* ============================================================ */
+#timeline .wrap{
+  position:relative;
+  z-index:2;
+}
+
+/* ---------- header row + glowing orb ---------- */
+#timeline .eyebrow{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+
+.timeline-orb{
+  width:56px;
+  height:56px;
+  flex:0 0 auto;
+  position:relative;
+  cursor:pointer;
+  filter:drop-shadow(0 0 10px rgba(224,41,62,0.5));
+  transition:filter .3s ease;
+}
+.timeline-orb:hover{
+  filter:drop-shadow(0 0 18px rgba(224,41,62,0.75)) drop-shadow(0 0 30px rgba(242,165,65,0.35));
+}
+.timeline-orb canvas{ display:block; }
+
+@media (max-width:640px){
+  #timeline .wrap[style]{
+    grid-template-columns:1fr !important;
+  }
+  .timeline-orb{ width:44px; height:44px; }
+}
+
+/* ---------- floating hero image, left side ---------- */
+.timeline-hero-float{
+  position:absolute;
+  top:0;
+  left:0;
+  height:100%;
+  width:46%;
+  z-index:1;
+  pointer-events:none;
+  -webkit-mask-image: linear-gradient(270deg, transparent 0%, black 22%);
+  mask-image: linear-gradient(270deg, transparent 0%, black 22%);
+}
+.timeline-hero-float img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:top center;
+  display:block;
+}
+
+@media (max-width:960px){
+  .timeline-hero-float{ display:none; }
+}
+
+/* ============================================================
+   TWO-COLUMN SPLIT
+   ============================================================ */
+
+.timeline-split{
+  display:grid;
+  grid-template-columns:1fr 1.15fr;
+  gap:56px;
+  align-items:start;
+  position:relative;
+}
+
+.timeline-intro{
+  position:relative;
+  z-index:2;
+  padding-top:8px;
+}
+.timeline-intro .section-title{ margin-bottom:22px; }
+.timeline-intro .section-title .accent{ color:var(--tl-blood); }
+.timeline-intro .section-sub{ max-width:44ch; }
+
+/* ---------- tabbed agenda panel ---------- */
+.timeline-agenda-panel{
+  background:rgba(15,14,18,0.72);
+  border:1px solid var(--tl-line);
+  border-radius:12px;
+  padding:22px 22px 8px;
+  backdrop-filter:blur(3px);
+}
+
+.timeline-day-tabs{
+  display:flex;
+  gap:10px;
+  margin-bottom:22px;
+  flex-wrap:wrap;
+}
+.timeline-day-tab{
+  flex:1 1 220px;
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+  text-align:left;
+  padding:12px 16px;
+  border-radius:8px;
+  border:1px solid var(--tl-line);
+  background:rgba(255,255,255,0.02);
+  cursor:pointer;
+  font-family:inherit;
+  transition:background .3s ease, border-color .3s ease, box-shadow .3s ease;
+}
+.timeline-day-tab .td-label{
+  font-size:14px; font-weight:600; color:var(--tl-muted);
+  transition:color .3s ease;
+}
+.timeline-day-tab .td-time{
+  font-family:'JetBrains Mono', monospace;
+  font-size:11px; letter-spacing:.06em;
+  color:var(--tl-muted);
+  opacity:0.7;
+}
+.timeline-day-tab.is-active{
+  background:linear-gradient(120deg, color-mix(in srgb, var(--tl-blood) 22%, transparent), color-mix(in srgb, var(--tl-amber) 18%, transparent));
+  border-color:color-mix(in srgb, var(--tl-blood) 55%, var(--tl-line));
+  box-shadow:0 0 0 1px color-mix(in srgb, var(--tl-blood) 30%, transparent), 0 10px 24px -14px rgba(224,41,62,0.5);
+}
+.timeline-day-tab.is-active .td-label{ color:var(--tl-text); }
+.timeline-day-tab.is-active .td-time{ color:var(--tl-amber); opacity:1; }
+.timeline-day-tab:hover:not(.is-active){
+  border-color:color-mix(in srgb, var(--tl-blood) 30%, var(--tl-line));
+}
+
+/* ---------- t-item layout ---------- */
+.t-tag{
+  display:inline-block;
+  font-family:'JetBrains Mono', monospace;
+  font-size:10.5px;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  color:var(--tl-amber);
+  background:color-mix(in srgb, var(--tl-amber) 12%, transparent);
+  border:1px solid color-mix(in srgb, var(--tl-amber) 35%, transparent);
+  padding:4px 9px;
+  border-radius:20px;
+  margin-top:4px;
+}
+
+@media (max-width:960px){
+  .timeline-split{ grid-template-columns:1fr; }
+}
+
+/* ============================================================ */
+/* CHARACTER IMAGES ON BOTH SIDES - MEDIUM BRIGHTNESS           */
+/* ============================================================ */
+
+/* Left Character - Marvel (Medium Brightness) */
+.timeline-character-left {
+  position: absolute;
+  bottom: -20px;
+  left: -120px;
+  width: 650px;
+  height: 800px;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.75; /* ← Increased from 0.65 */
+  filter: drop-shadow(0 0 45px rgba(224, 41, 62, 0.35)) /* ← Increased from 30px/0.15 */
+          drop-shadow(0 0 90px rgba(224, 41, 62, 0.2)); /* ← Increased from 60px/0.08 */
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.timeline-character-left img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: bottom;
+  display: block;
+  filter: brightness(0.95) contrast(1.0) saturate(0.9); /* ← Increased from 0.75/0.9/0.8 */
+}
+
+.timeline-character-left:hover {
+  opacity: 0.9; /* ← Increased from 0.6 */
+  transform: scale(1.05);
+}
+
+/* Right Character - DC (Medium Brightness) */
+.timeline-character-right {
+  position: absolute;
+  bottom: -20px;
+  right: -120px;
+  width: 650px;
+  height: 800px;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.75; /* ← Increased from 0.35 */
+  filter: drop-shadow(0 0 45px rgba(242, 165, 65, 0.35)) /* ← Increased from 30px/0.15 */
+          drop-shadow(0 0 90px rgba(242, 165, 65, 0.2)); /* ← Increased from 60px/0.08 */
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.timeline-character-right img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: bottom;
+  display: block;
+  filter: brightness(0.95) contrast(1.0) saturate(0.9); /* ← Increased from 0.75/0.9/0.8 */
+}
+
+.timeline-character-right:hover {
+  opacity: 0.9; /* ← Increased from 0.6 */
+  transform: scale(1.05);
+}
+
+/* Brighter Glow Animation - Left */
+@keyframes characterGlowLeft {
+  0%, 100% {
+    filter: drop-shadow(0 0 45px rgba(224, 41, 62, 0.35)) 
+            drop-shadow(0 0 90px rgba(224, 41, 62, 0.2));
+    opacity: 0.75;
+  }
+  50% {
+    filter: drop-shadow(0 0 60px rgba(224, 41, 62, 0.5)) 
+            drop-shadow(0 0 120px rgba(224, 41, 62, 0.3));
+    opacity: 0.85;
+  }
+}
+
+.timeline-character-left {
+  animation: characterGlowLeft 4s ease-in-out infinite; /* ← Faster animation */
+}
+
+/* Brighter Glow Animation - Right */
+@keyframes characterGlowRight {
+  0%, 100% {
+    filter: drop-shadow(0 0 45px rgba(242, 165, 65, 0.35)) 
+            drop-shadow(0 0 90px rgba(242, 165, 65, 0.2));
+    opacity: 0.75;
+  }
+  50% {
+    filter: drop-shadow(0 0 60px rgba(242, 165, 65, 0.5)) 
+            drop-shadow(0 0 120px rgba(242, 165, 65, 0.3));
+    opacity: 0.85;
+  }
+}
+
+.timeline-character-right {
+  animation: characterGlowRight 4s ease-in-out infinite 1.2s; /* ← Faster animation */
+}
+
+/* Responsive - Adjust for medium screens */
+@media (max-width: 1400px) {
+  .timeline-character-left {
+    width: 500px;
+    height: 620px;
+    left: -80px;
+  }
+  
+  .timeline-character-right {
+    width: 500px;
+    height: 620px;
+    right: -80px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .timeline-character-left {
+    width: 380px;
+    height: 480px;
+    left: -40px;
+  }
+  
+  .timeline-character-right {
+    width: 380px;
+    height: 480px;
+    right: -40px;
+  }
+}
+
+@media (max-width: 992px) {
+  .timeline-character-left,
+  .timeline-character-right {
+    display: none;
+  }
+}

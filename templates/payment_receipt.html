@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment Receipt — ASSEMBLE</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/payment-receipt.css') }}">
+</head>
+<body>
+  <header class="receipt-nav">
+    <a href="{{ url_for('index') }}" class="receipt-brand"><span></span>ASSEMBLE</a>
+    <a href="{{ url_for('dashboard') }}" class="back-link">← Dashboard</a>
+  </header>
+  <main class="receipt-shell">
+    <section class="receipt-page">
+      <header class="college-header">
+        <div class="logo-box macfast-logo">
+          <img src="{{ url_for('static', filename='images/macfast-logo.png') }}" alt="MACFAST logo" onerror="this.parentElement.classList.add('logo-fallback')">
+          <strong>MACFAST</strong>
+        </div>
+        <div class="college-copy">
+          <h1>Mar Athanasios College for Advanced Studies</h1>
+          <p>Tiruvalla, Kerala</p>
+          <span>MACFIESTA 2K26</span>
+          <strong>ASSEMBLE — Vibe Coding Hackathon</strong>
+        </div>
+        <div class="logo-box fest-logo">
+          <img src="{{ url_for('static', filename='images/macfiesta-logo.png') }}" alt="MACFIESTA 2K26 logo" onerror="this.parentElement.classList.add('logo-fallback')">
+          <strong>MACFIESTA 2K26</strong>
+        </div>
+      </header>
+      <div class="receipt-title-row">
+        <div><span class="eyebrow">Payment Confirmation</span><h2>Payment Receipt</h2><p>Generated after verification by the ASSEMBLE registration team.</p></div>
+        <div class="receipt-number"><small>Receipt Number</small><strong>{{ receipt_number }}</strong></div>
+      </div>
+      <section class="receipt-details">
+        <div><small>Team ID</small><strong>#ASM-{{ '%04d' | format(team.id) }}</strong></div>
+        <div><small>Team Name</small><strong>{{ team.team_name }}</strong></div>
+        <div><small>Team Leader</small><strong>{{ leader.member_name }}</strong></div>
+        <div><small>Leader Email</small><strong>{{ leader.email }}</strong></div>
+        <div><small>College</small><strong>{{ leader.college_name or '—' }}</strong></div>
+        <div><small>Domain</small><strong>{{ team.project_domain }}</strong></div>
+        <div><small>Team Size</small><strong>{{ members | length }} member{{ '' if members | length == 1 else 's' }}</strong></div>
+        <div><small>Status</small><strong class="approved-status">✓ Approved</strong></div>
+      </section>
+      <section class="payment-strip">
+        <div><small>UPI / UTR Transaction ID</small><strong>{{ payment.transaction_id }}</strong></div>
+        <div class="amount"><small>Amount Received</small><strong>₹{{ '%.2f' | format(payment.amount | float) }}</strong></div>
+      </section>
+      <section class="receipt-meta">
+        <div><small>Payment Mode</small><strong>UPI</strong></div>
+        <div><small>Submitted On</small><strong>{{ payment.submitted_at | replace('T', ' ') if payment.submitted_at else '—' }}</strong></div>
+        <div><small>Verified On</small><strong>{{ payment.verified_at | replace('T', ' ') if payment.verified_at else '—' }}</strong></div>
+      </section>
+      <footer class="receipt-footer"><strong>Thank you for registering for ASSEMBLE.</strong><p>This computer-generated receipt confirms the approved registration-fee submission. Contact the registration committee for corrections.</p></footer>
+    </section>
+    <div class="receipt-actions">
+      <a class="download-button" href="{{ url_for('download_payment_receipt') }}">Download PDF Receipt ↓</a>
+      <button type="button" class="print-button" onclick="window.print()">Print Receipt</button>
+    </div>
+  </main>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment — ASSEMBLE</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/registration-flow.css') }}">
+</head>
+<body>
+  <header class="flow-nav"><a href="{{ url_for('index') }}" class="dash-brand"><span class="brand-signal"></span>ASSEMBLE</a><a href="{{ url_for('dashboard') }}" class="back-dashboard">← Dashboard</a></header>
+
+  <main class="flow-shell narrow-shell">
+    <section class="flow-intro"><span class="flow-kicker">Squad Protocol / Step 02</span><h1>Complete the <em>Payment</em></h1><p>Scan the official QR, pay the registration fee, then submit the UPI/UTR transaction ID and payment screenshot.</p></section>
+
+    <div class="flow-progress">
+      <div class="flow-step complete"><span>✓</span><div><small>Complete</small><strong>Team Details</strong></div></div><div class="flow-line complete"></div>
+      <div class="flow-step active"><span>02</span><div><small>Current</small><strong>Payment</strong></div></div><div class="flow-line"></div>
+      <div class="flow-step"><span>03</span><div><small>Final</small><strong>Submission</strong></div></div>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}{% if messages %}<div class="flash-stack">{% for category, message in messages %}<div class="flash-message {{ category }}">{{ message }}</div>{% endfor %}</div>{% endif %}{% endwith %}
+
+    {% if existing_payment and existing_payment.payment_status == 'rejected' %}
+      <div class="rejection-banner"><strong>Payment rejected:</strong> {{ existing_payment.rejection_reason or 'Please submit a clear and valid payment proof.' }}</div>
+    {% endif %}
+
+    <div class="payment-layout">
+      <section class="flow-card qr-card">
+        <span class="card-label">Official Payment QR</span>
+        <div class="qr-frame">
+          <img id="payment-qr" src="{{ url_for('static', filename='images/payment-qr.png') }}" alt="Official hackathon payment QR code">
+          <div id="qr-missing" class="qr-missing" hidden><strong>QR image not added</strong><span>Place the official QR at static/images/payment-qr.png</span></div>
+        </div>
+        <div class="amount-display"><span>Registration Fee</span><strong>₹{{ registration_fee | int }}</strong></div>
+        <div class="qr-rules"><p>✓ Verify the receiver name before paying.</p><p>✓ Pay the exact registration amount.</p><p>✓ Keep the transaction ID and screenshot.</p></div>
+      </section>
+
+      <form class="flow-card payment-form" method="post" action="{{ url_for('payment') }}" enctype="multipart/form-data">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <div class="card-heading"><span>02</span><div><small>Payment Verification</small><h2>Submit Payment Proof</h2></div></div>
+        <div class="team-payment-summary"><span>Paying for</span><strong>{{ team.team_name }}</strong><small>{{ team.project_domain }}</small></div>
+
+        <label class="flow-field"><span>UPI / UTR Transaction ID</span><input id="transaction-id" type="text" name="transaction_id" value="{{ request.form.get('transaction_id', '') }}" placeholder="Enter the transaction reference" minlength="6" maxlength="50" required><small>Enter it exactly as shown in your payment application.</small></label>
+
+        <div class="flow-field"><span>Payment Screenshot</span>
+          <label class="upload-zone" for="payment-screenshot">
+            <input id="payment-screenshot" type="file" name="payment_screenshot" accept="image/png,image/jpeg,image/webp" required>
+            <img id="screenshot-preview" alt="Payment screenshot preview" hidden>
+            <div id="upload-copy"><b>↑</b><strong>Choose payment screenshot</strong><span>PNG, JPG or WebP · Maximum 2 MB</span></div>
+          </label>
+          <div id="file-error" class="file-error" role="alert"></div>
+        </div>
+
+        <label class="confirm-check"><input type="checkbox" required><span>I confirm that the transaction details belong to this team and the submitted proof is genuine.</span></label>
+        <button class="flow-button primary full-button" type="submit">Submit Team Registration <span>→</span></button>
+        <p class="secure-note">Your screenshot is stored privately and is accessible only to authorized administrators.</p>
+      </form>
+    </div>
+  </main>
+  <script src="{{ url_for('static', filename='js/registration-flow.js') }}"></script>
+</body>
+</html>

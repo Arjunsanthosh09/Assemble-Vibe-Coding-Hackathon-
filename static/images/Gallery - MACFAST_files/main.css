@@ -1,0 +1,13 @@
+.site-content .elementor-row{
+	flex-wrap: wrap;
+}
+/* Fix cms_clients_list: inner content slides should always be visible */
+.cms-client1.cms-slick-slider .slick-slide .slick-slide {
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+/* Fix stretched sections not reaching viewport edge (scrollbar gap) */
+.elementor-section-stretched {
+  width: 100vw !important;
+}

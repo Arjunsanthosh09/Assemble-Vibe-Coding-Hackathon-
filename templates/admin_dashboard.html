@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Command Centre — ASSEMBLE</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/admin-dashboard.css') }}">
+</head>
+<body>
+  <header class="admin-nav">
+    <a href="{{ url_for('admin_dashboard') }}" class="admin-brand"><span></span>ASSEMBLE <em>ADMIN</em></a>
+    <nav><a class="active" href="{{ url_for('admin_dashboard') }}">Payments</a><a href="{{ url_for('index') }}">Public Site</a></nav>
+    <div class="admin-user"><div>{{ session.get('full_name', 'A')[0] | upper }}</div><span><strong>{{ session.get('full_name', 'Administrator') }}</strong><small>Administrator</small></span></div>
+  </header>
+
+  <main class="admin-shell">
+    {% with messages = get_flashed_messages(with_categories=true) %}{% if messages %}<div class="admin-flashes">{% for category,message in messages %}<div class="admin-flash {{ category }}">{{ message }}</div>{% endfor %}</div>{% endif %}{% endwith %}
+
+    <section class="admin-hero">
+      <div><span class="admin-kicker">Mission Control / Payment Verification</span><h1>Team <em>Approvals</em></h1><p>Review submitted squads, confirm payment proof, and authorize final hackathon registration.</p></div>
+      <div class="live-admin"><span></span>Secure admin channel</div>
+    </section>
+
+    <section class="admin-stats">
+      <article><small>Total Teams</small><strong>{{ statistics.total_teams }}</strong><span>Registered squads</span></article>
+      <article class="pending"><small>Pending Review</small><strong>{{ statistics.pending }}</strong><span>Requires attention</span></article>
+      <article class="approved"><small>Approved</small><strong>{{ statistics.approved }}</strong><span>Confirmed teams</span></article>
+      <article class="rejected"><small>Rejected</small><strong>{{ statistics.rejected }}</strong><span>Awaiting re-upload</span></article>
+      <article class="collected"><small>Verified Fees</small><strong>₹{{ statistics.collected | int }}</strong><span>Approved payments</span></article>
+    </section>
+
+    <section class="admin-insights">
+      <article class="admin-analytics-card">
+        <div class="review-heading"><div><span class="admin-kicker">Live Analytics</span><h2>Registration Overview</h2></div><span class="result-count">{{ statistics.total_teams }} teams</span></div>
+        {% set total = statistics.total_teams if statistics.total_teams else 1 %}
+        <div class="status-chart" role="img" aria-label="Payment status graph">
+          <div class="chart-row approved"><div><span>Approved</span><strong>{{ statistics.approved }}</strong></div><div class="chart-track"><span style="width: {{ (statistics.approved / total * 100) | round(1) }}%"></span></div></div>
+          <div class="chart-row pending"><div><span>Pending</span><strong>{{ statistics.pending }}</strong></div><div class="chart-track"><span style="width: {{ (statistics.pending / total * 100) | round(1) }}%"></span></div></div>
+          <div class="chart-row rejected"><div><span>Rejected</span><strong>{{ statistics.rejected }}</strong></div><div class="chart-track"><span style="width: {{ (statistics.rejected / total * 100) | round(1) }}%"></span></div></div>
+          <div class="chart-row not-submitted"><div><span>Not Submitted</span><strong>{{ statistics.not_submitted }}</strong></div><div class="chart-track"><span style="width: {{ (statistics.not_submitted / total * 100) | round(1) }}%"></span></div></div>
+        </div>
+      </article>
+
+      <article class="announcement-admin-card">
+        <div class="review-heading"><div><span class="admin-kicker">Broadcast Centre</span><h2>Post Announcement</h2></div></div>
+        <form class="announcement-form" method="post" action="{{ url_for('create_announcement') }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <input type="text" name="title" minlength="3" maxlength="120" placeholder="Announcement title" required>
+          <select name="announcement_type">
+            <option value="general">General</option><option value="important">Important</option><option value="schedule">Schedule</option><option value="challenge">Challenge</option>
+          </select>
+          <textarea name="message" minlength="5" maxlength="1000" placeholder="Write the announcement shown to participants..." required></textarea>
+          <button type="submit">Publish Announcement →</button>
+        </form>
+      </article>
+    </section>
+
+    {% if announcements %}
+      <section class="announcement-history">
+        <div class="review-heading"><div><span class="admin-kicker">Recent Broadcasts</span><h2>Announcements</h2></div><span class="result-count">{{ announcements | length }} recent</span></div>
+        <div class="announcement-admin-list">
+          {% for announcement in announcements %}
+            <article class="announcement-admin-item {{ '' if announcement.is_active else 'inactive' }}">
+              <div><span class="announcement-type">{{ announcement.announcement_type | title }}</span><strong>{{ announcement.title }}</strong><p>{{ announcement.message }}</p></div>
+              <form method="post" action="{{ url_for('toggle_announcement', announcement_id=announcement.id) }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button type="submit">{{ 'Hide' if announcement.is_active else 'Show' }}</button></form>
+            </article>
+          {% endfor %}
+        </div>
+      </section>
+    {% endif %}
+
+    <section class="review-panel">
+      <div class="review-heading"><div><span class="admin-kicker">Verification Queue</span><h2>Payment Submissions</h2></div><span class="result-count">{{ records | length }} result{{ '' if records | length == 1 else 's' }}</span></div>
+
+      <form class="admin-filters" method="get" action="{{ url_for('admin_dashboard') }}">
+        <label><span>⌕</span><input type="search" name="q" value="{{ search_query }}" placeholder="Search team, leader, college or transaction ID"></label>
+        <select name="status">
+          <option value="all" {{ 'selected' if status_filter == 'all' else '' }}>All payment states</option>
+          <option value="pending" {{ 'selected' if status_filter == 'pending' else '' }}>Pending</option>
+          <option value="approved" {{ 'selected' if status_filter == 'approved' else '' }}>Approved</option>
+          <option value="rejected" {{ 'selected' if status_filter == 'rejected' else '' }}>Rejected</option>
+          <option value="not_submitted" {{ 'selected' if status_filter == 'not_submitted' else '' }}>Not submitted</option>
+        </select>
+        <button type="submit">Apply Filters</button>
+        <a class="export-button" href="{{ url_for('admin_export_users', q=search_query, status=status_filter) }}">Full Excel ↓</a>
+        <a class="export-button registration-export" href="{{ url_for('admin_export_registration_team', q=search_query, status=status_filter) }}">Registration Excel ↓</a>
+        {% if search_query or status_filter != 'all' %}<a href="{{ url_for('admin_dashboard') }}">Clear</a>{% endif %}
+      </form>
+
+      <div class="team-review-list">
+        {% for record in records %}
+          {% set team = record.team %}{% set leader = record.leader %}{% set payment = record.payment %}
+          <article class="review-card">
+            <div class="review-summary">
+              <button class="expand-button" type="button" aria-expanded="false" aria-controls="details-{{ team.id }}">+</button>
+              <div class="team-mark">{{ team.team_name[0] | upper }}</div>
+              <div class="team-primary"><small>Team #ASM-{{ '%04d' | format(team.id) }}</small><h3>{{ team.team_name }}</h3><span>{{ team.project_domain }}</span></div>
+              <div class="summary-data"><small>Leader</small><strong>{{ leader.full_name or 'Unknown' }}</strong><span>{{ leader.college_name or '—' }}</span></div>
+              <div class="summary-data"><small>Members</small><strong>{{ record.members | length }} / 3</strong><span>Squad roster</span></div>
+              <div class="summary-data transaction"><small>Transaction</small><strong>{{ payment.transaction_id if payment else 'Not submitted' }}</strong><span>₹{{ payment.amount | int if payment else 0 }}</span></div>
+              <span class="payment-chip {{ payment.payment_status if payment else 'not-submitted' }}">{{ payment.payment_status | title if payment else 'Not Submitted' }}</span>
+            </div>
+
+            <div class="review-details" id="details-{{ team.id }}" hidden>
+              <div class="detail-grid">
+                <section><span class="detail-title">Leader Contact</span><dl><div><dt>Name</dt><dd>{{ leader.full_name or '—' }}</dd></div><div><dt>Phone</dt><dd>{{ leader.phone or '—' }}</dd></div><div><dt>College</dt><dd>{{ leader.college_name or '—' }}</dd></div></dl></section>
+                <section><span class="detail-title">Payment Record</span><dl><div><dt>Amount</dt><dd>₹{{ payment.amount | int if payment else 0 }}</dd></div><div><dt>Transaction ID</dt><dd>{{ payment.transaction_id if payment else '—' }}</dd></div><div><dt>Submitted</dt><dd>{{ payment.submitted_at[:16] | replace('T',' ') if payment and payment.submitted_at else '—' }}</dd></div></dl></section>
+              </div>
+
+              <section class="roster-section"><span class="detail-title">Registered Members</span><div class="admin-roster">{% for member in record.members %}<div><b>{{ member.member_name[0] | upper }}</b><span><strong>{{ member.member_name }}</strong><small>{{ member.email }} · {{ member.phone or 'No phone' }}</small></span>{% if member.is_team_leader %}<em>Leader</em>{% endif %}</div>{% endfor %}</div></section>
+
+              {% if payment %}
+                <div class="review-actions">
+                  <a class="proof-button" href="{{ url_for('admin_payment_proof', payment_id=payment.id) }}" target="_blank" rel="noopener">View Payment Screenshot ↗</a>
+                  {% if payment.payment_status != 'approved' %}
+                    <button class="reject-button" type="button" data-team="{{ team.team_name }}" data-reject-url="{{ url_for('reject_payment', payment_id=payment.id) }}">Reject</button>
+                    <form method="post" action="{{ url_for('approve_payment', payment_id=payment.id) }}" onsubmit="return confirm('Approve payment and confirm this team?');"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="approve-button" type="submit">Approve Team ✓</button></form>
+                  {% else %}<span class="approved-note">✓ Registration approved</span>{% endif %}
+                </div>
+                {% if payment.payment_status == 'rejected' and payment.rejection_reason %}<div class="existing-rejection"><strong>Rejection reason:</strong> {{ payment.rejection_reason }}</div>{% endif %}
+              {% else %}<div class="no-payment">This team has not submitted payment proof yet.</div>{% endif %}
+            </div>
+          </article>
+        {% else %}
+          <div class="admin-empty"><span>◎</span><h3>No teams found</h3><p>No submissions match the selected filters.</p></div>
+        {% endfor %}
+      </div>
+    </section>
+  </main>
+
+  <dialog id="reject-dialog" class="reject-dialog">
+    <form id="reject-form" method="post">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <button class="dialog-close" type="button" aria-label="Close">×</button>
+      <span class="admin-kicker">Reject Payment</span><h2 id="reject-title">Payment needs attention</h2><p>Give the team a clear reason so the leader knows what to correct.</p>
+      <label>Reason<textarea name="rejection_reason" minlength="5" maxlength="500" placeholder="Example: Screenshot is unclear or transaction ID does not match." required></textarea></label>
+      <div><button type="button" class="cancel-reject">Cancel</button><button type="submit" class="confirm-reject">Reject Payment</button></div>
+    </form>
+  </dialog>
+
+  <form class="admin-logout" method="post" action="{{ url_for('admin_logout') }}">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <button type="submit">Log out ↗</button>
+  </form>
+  <script src="{{ url_for('static', filename='js/admin-dashboard.js') }}"></script>
+</body>
+</html>

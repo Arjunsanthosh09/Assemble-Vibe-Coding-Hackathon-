@@ -1,0 +1,109 @@
+.domain-hero > .grid-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+/* ============================================================
+   NAVBAR RESPONSIVE FIX
+   Loaded after domains.css — overrides the mobile nav behavior
+   and styles the hamburger toggle that the JS already expects.
+   ============================================================ */
+
+.page-nav {
+  position: sticky;
+  gap: 12px;
+}
+
+/* Hamburger button — hidden on desktop */
+.menu-toggle {
+  display: none;
+  width: 40px;
+  height: 40px;
+  margin-left: auto;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.menu-toggle span {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: var(--white);
+  transition: transform 0.28s ease, opacity 0.28s ease;
+}
+
+.menu-toggle[aria-expanded="true"] span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+.menu-toggle[aria-expanded="true"] span:nth-child(2) {
+  opacity: 0;
+}
+.menu-toggle[aria-expanded="true"] span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+@media (max-width: 760px) {
+  .page-nav {
+    height: 64px;
+    min-height: 64px;
+    padding: 0 16px;
+    flex-wrap: nowrap; /* keep brand + toggle on one line */
+  }
+
+  .menu-toggle {
+    display: flex;
+  }
+
+  /* Nav becomes a dropdown panel anchored under the bar */
+  .page-nav nav {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: auto;
+    max-height: 0;
+    overflow: hidden;
+    flex-direction: column;
+    background: rgba(7, 9, 13, 0.97);
+    backdrop-filter: blur(18px);
+    border-bottom: 1px solid var(--line);
+    transition: max-height 0.32s ease;
+  }
+
+  .page-nav nav.open {
+    max-height: 420px;
+    overflow-y: auto;
+  }
+
+  .page-nav nav a {
+    display: flex;
+    align-items: center;
+    height: auto;
+    min-height: 48px;
+    padding: 0 20px;
+    justify-content: flex-start;
+    font-size: 11px;
+    border-bottom: 1px solid var(--line);
+    white-space: normal;
+  }
+
+  .page-nav nav a.active {
+    color: var(--red);
+  }
+  .page-nav nav a.active::after {
+    display: none;
+  }
+
+  main {
+    padding-top: 24px;
+  }
+}

@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Squad Dashboard — ASSEMBLE</title>
+  <meta name="description" content="ASSEMBLE hackathon participant dashboard">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+</head>
+<body>
+  {% set registration_complete = team and team.registration_status == 'approved' and payment and payment.payment_status == 'approved' %}
+  <div class="ambient ambient-one"></div>
+  <div class="ambient ambient-two"></div>
+
+  <header class="dash-nav">
+    <a href="{{ url_for('index') }}" class="dash-brand" aria-label="ASSEMBLE home">
+      <span class="brand-signal"></span>
+      ASSEMBLE
+    </a>
+
+    <button class="menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+
+    <nav class="dash-links" aria-label="Dashboard navigation">
+      <a class="active" href="{{ url_for('dashboard') }}">Dashboard</a>
+      <a href="{{ url_for('college_events') }}">Events</a>
+      <a href="#announcements">Announcements</a>
+      <a href="{{ url_for('rules_and_regulations') }}">Rules & Regulations</a>
+      <a href="{{ url_for('domains') }}">Domains</a>
+      <a href="{{ url_for('timeline') }}">Timeline</a>
+    </nav>
+
+    <div class="nav-user">
+      <button class="notification-button" id="notification-toggle" type="button" aria-label="Notifications" aria-expanded="false" aria-controls="notification-drawer">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"></path></svg>
+        {% if unread_count %}<span class="notification-badge">{{ unread_count if unread_count < 10 else '9+' }}</span>{% endif %}
+      </button>
+      <div class="avatar">{{ session.get('full_name', 'U')[0] | upper }}</div>
+      <div class="user-copy">
+        <strong>{{ session.get('full_name', 'Participant') }}</strong>
+        <span>{{ session.get('user_role', 'participant') | title }}</span>
+      </div>
+    </div>
+  </header>
+
+  <aside class="notification-drawer" id="notification-drawer" hidden>
+    <div class="notification-drawer-head"><div><span class="panel-kicker">Private Updates</span><h2>Notifications</h2></div>{% if unread_count %}<form method="post" action="{{ url_for('mark_all_notifications_read') }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button type="submit">Mark all read</button></form>{% endif %}</div>
+    <div class="notification-drawer-list">
+      {% for item in notifications %}
+        <article class="drawer-notification {{ '' if item.is_read else 'unread' }}">
+          <span class="signal-type {{ item.notification_type }}"></span>
+          <div><strong>{{ item.title }}</strong><p>{{ item.message }}</p><small>{{ item.created_at[:16] | replace('T', ' ') if item.created_at else '' }}</small></div>
+          {% if not item.is_read %}<form method="post" action="{{ url_for('mark_notification_read', notification_id=item.id) }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button type="submit" aria-label="Mark notification as read">✓</button></form>{% endif %}
+        </article>
+      {% else %}
+        <div class="quiet-signal"><span>◎</span><p>No private notifications yet.</p></div>
+      {% endfor %}
+    </div>
+  </aside>
+
+  <main class="dashboard-shell">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flash-stack">
+          {% for category, message in messages %}
+            <div class="flash-message {{ category }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <section class="dashboard-hero">
+      <div class="hero-grid"></div>
+      <div class="hero-copy">
+        <div class="signal-label"><span></span> Squad channel online</div>
+        <p class="overline">Participant Command Centre</p>
+        <h1>Welcome back,<br><em>{{ session.get('full_name', 'Hero') }}</em></h1>
+        <p class="hero-description">Your mission status, squad registration, payment verification and event signals—all in one command centre.</p>
+        <div class="hero-actions">
+          <a class="primary-action" href="{{ next_step.url }}">{{ next_step.label }} <span>→</span></a>
+          <a class="secondary-action coming-link" href="#">Explore Challenges</a>
+        </div>
+      </div>
+
+      <div class="mission-card">
+        <div class="mission-topline">
+          <span>Current mission</span>
+          <span class="live-badge">Live</span>
+        </div>
+        <div class="mission-number">0{{ 2 if team else 1 }}</div>
+        <h2>{{ next_step.title }}</h2>
+        <p>{{ next_step.message }}</p>
+        <div class="mission-progress"><span style="width:{{ 100 if registration_complete else 75 if payment else 50 if team else 25 }}%"></span></div>
+        <div class="progress-labels"><span>Registration progress</span><strong>{{ 100 if registration_complete else 75 if payment else 50 if team else 25 }}%</strong></div>
+      </div>
+    </section>
+
+    <section class="status-strip" id="registration-status" aria-label="Registration progress">
+      <div class="status-step complete">
+        <span class="step-icon">✓</span>
+        <div><small>Step 01</small><strong>Account Created</strong></div>
+      </div>
+      <div class="step-line {{ 'complete' if team else '' }}"></div>
+      <div class="status-step {{ 'complete' if team else 'active' }}">
+        <span class="step-icon">{{ '✓' if team else '02' }}</span>
+        <div><small>Step 02</small><strong>Team Details</strong></div>
+      </div>
+      <div class="step-line {{ 'complete' if payment else '' }}"></div>
+      <div class="status-step {{ 'complete' if payment and payment.payment_status == 'approved' else 'active' if team else '' }}">
+        <span class="step-icon">{{ '✓' if payment and payment.payment_status == 'approved' else '03' }}</span>
+        <div><small>Step 03</small><strong>Payment</strong></div>
+      </div>
+      <div class="step-line {{ 'complete' if payment and payment.payment_status == 'approved' else '' }}"></div>
+      <div class="status-step {{ 'complete' if registration_complete else '' }}">
+        <span class="step-icon">{{ '✓' if registration_complete else '04' }}</span>
+        <div><small>Step 04</small><strong>Final Approval</strong></div>
+      </div>
+    </section>
+
+    <section class="dashboard-grid">
+      <div class="main-column">
+        <article class="panel next-panel">
+          <div class="panel-heading">
+            <div>
+              <span class="panel-kicker">Next Objective</span>
+              <h2>{{ next_step.title }}</h2>
+            </div>
+            <span class="objective-code">OBJ-{{ '002' if team else '001' }}</span>
+          </div>
+          <p>{{ next_step.message }}</p>
+
+          {% if not team %}
+            <div class="member-visual">
+              <div class="member-slot leader"><span>{{ session.get('full_name', 'L')[0] | upper }}</span><small>Leader</small></div>
+              <div class="member-connector"></div>
+              <div class="member-slot empty"><span>+</span><small>Member 2</small></div>
+              <div class="member-connector"></div>
+              <div class="member-slot empty"><span>+</span><small>Member 3</small></div>
+            </div>
+            <div class="objective-note"><strong>Maximum squad size:</strong> 3 members, including the team leader.</div>
+          {% endif %}
+
+          <a class="wide-action" href="{{ next_step.url }}">{{ next_step.label }} <span>→</span></a>
+        </article>
+
+        <article class="panel team-panel" id="team-card">
+          <div class="panel-heading">
+            <div><span class="panel-kicker">Squad Identity</span><h2>Your Team</h2></div>
+            {% if team %}<span class="status-chip {{ team.registration_status }}">{{ team.registration_status | title }}</span>{% endif %}
+          </div>
+
+          {% if team %}
+            <div class="team-name-row">
+              <div class="team-emblem">{{ team.team_name[0] | upper }}</div>
+              <div><h3>{{ team.team_name }}</h3><p>{{ team.project_domain or 'Domain not selected' }}</p></div>
+            </div>
+            <div class="team-data-grid">
+              <div><small>Domain</small><strong>{{ team.project_domain }}</strong></div>
+              <div><small>Members</small><strong>{{ members_count }} / 3</strong></div>
+              <div><small>Payment</small><strong>{{ payment.payment_status | title if payment else 'Not submitted' }}</strong></div>
+            </div>
+          {% else %}
+            <div class="empty-state">
+              <div class="empty-radar"><span></span></div>
+              <h3>No squad detected</h3>
+              <p>Register your team to unlock payment, challenges and leaderboard access.</p>
+            </div>
+          {% endif %}
+        </article>
+      </div>
+
+      <aside class="side-column">
+        <article class="panel event-card">
+          <span class="panel-kicker">Event Snapshot</span>
+          <h2>ASSEMBLE 2026</h2>
+          <div class="event-stat"><span>Date</span><strong>25 Sep 2026</strong></div>
+          <div class="event-stat"><span>Build Time</span><strong>6 Hours</strong></div>
+          <div class="event-stat"><span>Team Size</span><strong>Up to 3</strong></div>
+          <div class="event-stat"><span>Format</span><strong>Hackathon</strong></div>
+          <a href="{{ url_for('index') }}#about" class="text-link">View complete details →</a>
+        </article>
+
+        <article class="panel signals-card" id="announcements">
+          <div class="panel-heading compact">
+            <div><span class="panel-kicker">Incoming Signals</span><h2>Announcements & Updates</h2></div>
+            <span class="signal-count">{{ (announcements | length) + (notifications | length) }}</span>
+          </div>
+
+          <div class="signal-list">
+            {% for item in announcements %}
+              <div class="signal-item">
+                <span class="signal-type {{ item.announcement_type }}"></span>
+                <div><strong>{{ item.title }}</strong><p>{{ item.message }}</p><small>{{ item.published_at[:10] if item.published_at else '' }} · Announcement</small></div>
+              </div>
+            {% endfor %}
+            {% for item in notifications %}
+              <div class="signal-item">
+                <span class="signal-type {{ item.notification_type }}"></span>
+                <div><strong>{{ item.title }}</strong><p>{{ item.message }}</p><small>{{ item.created_at[:10] if item.created_at else '' }} · Private</small></div>
+              </div>
+            {% endfor %}
+            {% if not announcements and not notifications %}
+              <div class="quiet-signal">
+                <span>◎</span>
+                <p>No new signals. Mission control announcements will appear here.</p>
+              </div>
+            {% endif %}
+          </div>
+        </article>
+      </aside>
+    </section>
+  </main>
+
+  <div class="coming-toast" role="status" aria-live="polite">This section is coming in the next build.</div>
+
+  <form class="logout-form" method="post" action="{{ url_for('logout') }}">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <button type="submit">Log out <span>↗</span></button>
+  </form>
+
+  <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Timeline — ASSEMBLE Hackathon</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/timelines.css') }}"
+    />
+  </head>
+  <body>
+    <header class="page-nav">
+      <a class="page-brand" href="{{ url_for('index') }}"
+        ><span></span>ASSEMBLE</a
+      >
+
+      <button class="menu-toggle" type="button" id="timeline-menu-toggle" aria-label="Open navigation" aria-expanded="false" aria-controls="timeline-links">
+        <span></span><span></span><span></span>
+      </button>
+
+      <nav id="timeline-links" aria-label="Timeline navigation">
+        <a href="{{ url_for('college_events') }}">Events</a>
+        <a href="#announcements">Announcements</a>
+        <a href="{{ url_for('rules_and_regulations') }}">Rules & Regulations</a>
+        <a href="{{ url_for('domains') }}">Domains</a>
+        <a href="{{ url_for('timeline') }}" class="active">Timeline</a>
+        {% if
+        session.get('user_id') %}<a href="{{ url_for('dashboard') }}"
+          >Dashboard</a
+        >{% else %}<a href="{{ url_for('login') }}">Log In</a>{% endif %}
+      </nav>
+    </header>
+    <main id="timeline">
+      <div class="timeline-bg-image" aria-hidden="true">
+        <img
+          src="{{ url_for('static', filename='images/marvelvsdc.jpg') }}"
+          alt=""
+        />
+      </div>
+      <div class="timeline-character-left" aria-hidden="true">
+        <img
+          src="{{ url_for('static', filename='images/heroes/marvelleft.png') }}"
+          alt=""
+          onerror="this.hidden = true"
+        />
+      </div>
+      <div class="timeline-character-right" aria-hidden="true">
+        <img
+          src="{{ url_for('static', filename='images/heroes/dcright.png') }}"
+          alt=""
+          onerror="this.hidden = true"
+        />
+      </div>
+      <div class="timeline-wrap">
+        <section class="timeline-split">
+          <div class="timeline-intro">
+            <div class="eyebrow">
+              <span class="timeline-orb"></span>Mission Clock
+            </div>
+            <h1>
+              Six hours.<br /><span>One continuous</span><br />build loop.
+            </h1>
+            <p>
+              The clock starts at 09:30 and runs through to a live jury demo and
+              closing ceremony. Session 01 covers the domain briefing and first
+              build push; Session 02 carries every squad from lunch to code
+              freeze, demo and results.
+            </p>
+            <div class="clock-card">
+              <span>Build begins</span><strong>09:30 AM</strong
+              ><span>Results</span><strong>05:30 PM</strong>
+            </div>
+          </div>
+          <div class="timeline-agenda-panel">
+            <div class="timeline-day-tabs" role="tablist">
+              <button
+                class="timeline-day-tab is-active"
+                type="button"
+                role="tab"
+                aria-selected="true"
+                data-session="1"
+              >
+                <span>Session 01 — Build & Brief</span
+                ><small>09:30 AM – 01:00 PM</small></button
+              ><button
+                class="timeline-day-tab"
+                type="button"
+                role="tab"
+                aria-selected="false"
+                data-session="2"
+              >
+                <span>Session 02 — Push & Demo</span
+                ><small>01:00 PM – 05:30 PM</small>
+              </button>
+            </div>
+            <div class="timeline-track" data-session-panel="1">
+              <article class="t-item peak">
+                <span class="t-dot filled"></span>
+                <div class="t-time">09:30 — 10:00 AM</div>
+                <h2>Domain Draft & Briefing</h2>
+                <p>
+                  Squads lock in their power domain, receive the judging rubric
+                  and get environment access.
+                </p>
+                <span class="t-tag">Kickoff</span>
+              </article>
+              <article class="t-item peak">
+                <span class="t-dot filled"></span>
+                <div class="t-time">10:00 AM — 01:00 PM</div>
+                <h2>Build Phase I — Vibe & Ship</h2>
+                <p>
+                  Core build window. Mentors rotate through squads on request.
+                  First checkpoint ping at 11:30 AM.
+                </p>
+                <span class="t-tag">3 hours · build</span>
+              </article>
+            </div>
+            <div class="timeline-track" data-session-panel="2" hidden>
+              <article class="t-item">
+                <span class="t-dot"></span>
+                <div class="t-time">01:00 — 01:30 PM</div>
+                <h2>Power Recharge — Lunch</h2>
+                <p>
+                  Food, a short breather and preparation for the final push.
+                </p>
+              </article>
+              <article class="t-item peak">
+                <span class="t-dot filled"></span>
+                <div class="t-time">01:30 — 03:30 PM</div>
+                <h2>Build Phase II — Final Push</h2>
+                <p>
+                  Last stretch to polish the prototype and prepare the demo.
+                  Second checkpoint at 02:30 PM.
+                </p>
+                <span class="t-tag">2 hours · build</span>
+              </article>
+              <article class="t-item">
+                <span class="t-dot"></span>
+                <div class="t-time">03:30 — 03:45 PM</div>
+                <h2>Code Freeze</h2>
+                <p>
+                  Repositories lock. No further commits count toward judging
+                  after this point.
+                </p>
+                <span class="t-tag">Lock</span>
+              </article>
+              <article class="t-item peak">
+                <span class="t-dot filled"></span>
+                <div class="t-time">03:45 — 05:00 PM</div>
+                <h2>Demo & Judging</h2>
+                <p>
+                  Four-minute live demos per squad, followed by two minutes of
+                  judge questions.
+                </p>
+                <span class="t-tag">Finals</span>
+              </article>
+              <article class="t-item">
+                <span class="t-dot"></span>
+                <div class="t-time">05:00 — 05:30 PM</div>
+                <h2>Results & Closing Ceremony</h2>
+                <p>
+                  Winners are announced, prizes are distributed and the arena
+                  closes for the season.
+                </p>
+              </article>
+            </div>
+          </div>
+        </section>
+        <section class="timeline-note">
+          <span
+            >Keep watching the participant dashboard for schedule
+            announcements.</span
+          >{% if session.get('user_id') %}<a href="{{ url_for('dashboard') }}"
+            >Open Dashboard →</a
+          >{% else %}<a href="{{ url_for('login') }}">Log In →</a>{% endif %}
+        </section>
+      </div>
+    </main>
+    <script src="{{ url_for('static', filename='js/timeline.js') }}"></script>
+    <script>
+      // Mobile nav toggle (self-contained)
+      (function () {
+        var toggle = document.getElementById('timeline-menu-toggle');
+        var nav = document.getElementById('timeline-links');
+        if (!toggle || !nav) return;
+
+        function closeNav() {
+          nav.classList.remove('open');
+          toggle.setAttribute('aria-expanded', 'false');
+        }
+
+        toggle.addEventListener('click', function () {
+          var isOpen = nav.classList.toggle('open');
+          toggle.setAttribute('aria-expanded', String(isOpen));
+        });
+
+        nav.querySelectorAll('a').forEach(function (link) {
+          link.addEventListener('click', closeNav);
+        });
+
+        document.addEventListener('click', function (e) {
+          if (!nav.classList.contains('open')) return;
+          if (nav.contains(e.target) || toggle.contains(e.target)) return;
+          closeNav();
+        });
+
+        window.addEventListener('resize', function () {
+          if (window.innerWidth > 1000) closeNav();
+        });
+      })();
+    </script>
+  </body>
+</html>

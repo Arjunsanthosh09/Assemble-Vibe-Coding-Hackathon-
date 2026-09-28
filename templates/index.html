@@ -1,0 +1,2038 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ASSEMBLE — 6-Hour Vibe Coding Hackathon</title>
+    <meta
+      name="description"
+      content="ASSEMBLE is a 6-hour vibe coding hackathon. Form a squad, get your hero codename, pick your power, and build."
+    />
+    <script type="importmap">
+      {
+        "imports": {
+          "react": "https://esm.sh/react@18",
+          "react-dom/client": "https://esm.sh/react-dom@18/client",
+          "three": "https://esm.sh/three@0.160.0",
+          "postprocessing": "https://esm.sh/postprocessing@6.35.4?deps=three@0.160.0",
+          "face-api.js": "https://esm.sh/face-api.js@0.22.2",
+          "ogl": "https://esm.sh/ogl@1.0.11"
+        }
+      }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/about.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/domain.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/timeline.css') }}"
+    />
+  </head>
+  <body>
+    <header class="nav">
+      <div class="wrap nav-inner">
+        <a href="{{ url_for('index') }}" class="brand"
+          ><span class="dot"></span>ASSEMBLE</a
+        >
+        <nav class="nav-links">
+          <a href="#about">About</a>
+          <a href="#domains">Domains</a>
+          <a href="#timeline">Timeline</a>
+          <a href="#prizes">Prizes</a>
+          <a href="#contact">Contact</a>
+          <a href="{{ url_for('macfiesta') }}">Macfiesta</a>
+        </nav>
+
+        <div class="nav-cta">
+          <a href="{{ url_for('login') }}" class="btn btn-ghost btn-sm"
+            >Log In</a
+          >
+          <a href="{{ url_for('register') }}" class="btn btn-primary btn-sm"
+            >Register Squad</a
+          >
+        </div>
+      </div>
+    </header>
+
+    <!-- ============ HERO ============ -->
+    <section class="hero">
+      <div
+        class="img-slot slot-bleed dim"
+        data-label="Hero background&#10;images/hero-bg.jpg"
+      >
+        <img
+          src="{{ url_for('static', filename='images/spiderman.jpg') }}"
+          alt=""
+        />
+      </div>
+      <div
+        class="img-slot slot-portrait-left"
+        data-label="Left Hero&#10;images/left-hero.png"
+      >
+        <img src="{{ url_for('static', filename='images/r1.png') }}" alt="" />
+      </div>
+
+      <div
+        class="img-slot slot-portrait"
+        data-label="Spider-Man cutout&#10;images/HD Spiderman Aesthetic Chromatic Poster Wallpaper.jpg"
+      >
+        <img
+          src="{{ url_for('static', filename='images/batman1.png') }}"
+          alt=""
+        />
+      </div>
+      <div class="spider-web web1"></div>
+      <div class="spider-web web2"></div>
+      <div class="spider-web web3"></div>
+      <div class="wrap hero-inner">
+        <div class="hero-tag">
+          <span class="pulse"></span> SIGNAL DETECTED · SEPT 19, 2026 · OFFLINE
+        </div>
+        <h1>ASSEMBLE<span class="sub">A 6-Hour Vibe Coding Hackathon</span></h1>
+        <p class="hero-desc">
+          Every squad gets a randomly generated hero codename, a power (domain)
+          to master, and six hours on the clock. No long weekends. No
+          half-finished decks. Just fast, focused, vibe-driven building — then
+          you ship.
+        </p>
+        <div class="hero-actions">
+          <a href="{{ url_for('register') }}" class="btn btn-primary"
+            >Register Your Squad →</a
+          >
+          <a href="#timeline" class="btn btn-ghost">View Timeline</a>
+        </div>
+
+        <div class="hero-meta">
+          <div class="item">
+            <div class="k">Countdown to Assembly</div>
+            <div class="countdown">
+              <div class="box">
+                <div class="num" id="cd-days">00</div>
+                <div class="lbl">Days</div>
+              </div>
+              <div class="box">
+                <div class="num" id="cd-hours">00</div>
+                <div class="lbl">Hrs</div>
+              </div>
+              <div class="box">
+                <div class="num" id="cd-mins">00</div>
+                <div class="lbl">Min</div>
+              </div>
+              <div class="box">
+                <div class="num" id="cd-secs">00</div>
+                <div class="lbl">Sec</div>
+              </div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="k">Prize Pool</div>
+            <div class="v">₹15,000k</div>
+          </div>
+          <div class="item">
+            <div class="k">Squad Size</div>
+            <div class="v">1 – 3 Members</div>
+          </div>
+          <div class="item">
+            <div class="k">Format</div>
+            <div class="v">On-Campus</div>
+          </div>
+        </div>
+      </div>
+      <div class="hero-fade"></div>
+    </section>
+
+    <!-- About Section -->
+    <!-- Link this in your <head>: <link rel="stylesheet" href="about.css" /> -->
+    <section id="about">
+      <div
+        id="about-evil-eye"
+        class="evil-eye-bg"
+        data-eye-color="#FF6F37"
+        data-intensity="1.3"
+        data-pupil-size="0.6"
+        data-iris-width="0.25"
+        data-glow-intensity="0.3"
+        data-scale="0.8"
+        data-noise-scale="1"
+        data-pupil-follow="0.6"
+        data-flame-speed="0.7"
+        data-background-color="#120F17"
+        aria-hidden="true"
+      ></div>
+
+      <div class="char-float" aria-hidden="true">
+        <img
+          src="{{ url_for('static', filename='images/scrollimages/doomaboutleft.png') }}"
+          alt=""
+        />
+      </div>
+
+      <div class="wrap about-grid">
+        <div class="about-text">
+          <div class="eyebrow-row">
+            <div class="eyebrow">Mission Briefing</div>
+            <div class="codename-badge">Every squad gets a hero codename</div>
+          </div>
+
+          <h2 class="section-title">
+            Build fast.<br />Build <span class="accent">in character.</span>
+          </h2>
+
+          <p>
+            ASSEMBLE is a <b>6-hour vibe coding hackathon</b> — short enough for
+            an afternoon, intense enough to feel like a real op. Register and
+            your squad is issued a hero codename, Avengers-roster style. It
+            becomes your identity on the leaderboard, the schedule, and the
+            winners' wall.
+          </p>
+
+          <div class="quote-block">
+            "It's not the six hours you have. It's what you
+            <span class="ship">ship</span> in them."
+          </div>
+
+          <div class="op-log">
+            <div class="op-step">
+              <div class="tag">PWR</div>
+              <div class="body">
+                <h4>Pick a power</h4>
+                <p>
+                  Choose your domain at registration. It sets the brief your
+                  squad builds against.
+                </p>
+              </div>
+            </div>
+            <div class="op-step">
+              <div class="tag">SQD</div>
+              <div class="body">
+                <h4>Vibe-code with your squad</h4>
+                <p>
+                  No proposal stage, no multi-day grind. Six hours, your
+                  codename, heads down.
+                </p>
+              </div>
+            </div>
+            <div class="op-step">
+              <div class="tag">DMO</div>
+              <div class="body">
+                <h4>Demo, get scored</h4>
+                <p>Judges score working builds, not slide decks.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="stat-cards">
+            <div class="stat-card">
+              <div class="n">6 Hrs<span class="cursor"></span></div>
+              <div class="l">Build Window</div>
+            </div>
+            <div class="stat-card">
+              <div class="n">4</div>
+              <div class="l">Power Domains</div>
+            </div>
+            <div class="stat-card">
+              <div class="n">₹15k</div>
+              <div class="l">Prize Pool</div>
+            </div>
+            <div class="stat-card">
+              <div class="n">120+</div>
+              <div class="l">Squad Capacity</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ DOMAINS ============ -->
+    <section id="domains" class="section-alt halftone">
+      <div
+        class="img-slot slot-bleed dim"
+        data-label="Domains background&#10;images/domains-bg.jpg"
+      >
+        <img
+          src="{{ url_for('static', filename='images/scrollimages/domains-bg.jpg') }}"
+          alt=""
+        />
+      </div>
+      <div class="wrap reveal">
+        <div class="eyebrow">
+          <span class="domain-globe" aria-hidden="true"></span>
+          Choose Your Power
+        </div>
+        <h2 class="section-title">Four domains. One codename.</h2>
+        <p class="section-sub">
+          Pick the track your squad wants to fight in. You can build anything
+          within it — the domain just sets your battlefield.
+        </p>
+      </div>
+      <div class="wrap">
+        <div class="domain-grid reveal-stagger">
+          <div class="domain-card">
+            <div class="hero-pop">
+              <img
+                src="{{ url_for('static', filename='images/041ed3e6-2d13-4f8a-b0e1-bdd288c93ad6_removalai_preview.png') }}"
+                alt="AI &amp; Machine Learning hero"
+                class="hero-pop-img"
+                onerror="this.closest('.hero-pop').style.display = 'none'"
+              />
+            </div>
+            <div class="card-inner">
+              <div class="idx">01 / VISION</div>
+              <h3>AI &amp; Machine Learning</h3>
+              <p>
+                Agents, copilots, generative tools, or applied ML — anything
+                that reasons or predicts.
+              </p>
+              <span class="power-tag">Power: Precognition</span>
+            </div>
+          </div>
+          <div class="domain-card">
+            <div class="hero-pop">
+              <img
+                src="{{ url_for('static', filename='images/heroes/flash.png') }}"
+                alt="HealthTech hero"
+                class="hero-pop-img"
+                onerror="this.closest('.hero-pop').style.display = 'none'"
+              />
+            </div>
+            <div class="card-inner">
+              <div class="idx">02 / VITALS</div>
+              <h3>HealthTech</h3>
+              <p>
+                Diagnostics, patient tools, accessibility aids, or wellness
+                trackers with real utility.
+              </p>
+              <span class="power-tag">Power: Regeneration</span>
+            </div>
+          </div>
+
+          <div class="domain-card">
+            <div class="hero-pop">
+              <img
+                src="{{ url_for('static', filename='images/heroes/doom.png') }}"
+                alt="Climate &amp; Sustainability hero"
+                class="hero-pop-img"
+                onerror="this.closest('.hero-pop').style.display = 'none'"
+              />
+            </div>
+            <div class="card-inner">
+              <div class="idx">03 / TERRA</div>
+              <h3>Climate &amp; Sustainability</h3>
+              <p>
+                Carbon tracking, circular economy tools, or climate-resilient
+                infrastructure ideas.
+              </p>
+              <span class="power-tag">Power: Elemental Control</span>
+            </div>
+          </div>
+          <div class="domain-card">
+            <div class="hero-pop">
+              <img
+                src="{{ url_for('static', filename='images/heroes/batmansuperhero.png') }}"
+                alt="Web3 &amp; Infrastructure hero"
+                class="hero-pop-img"
+                onerror="this.closest('.hero-pop').style.display = 'none'"
+              />
+            </div>
+            <div class="card-inner">
+              <div class="idx">04 / OPEN</div>
+              <h3>Open Innovation</h3>
+              <p>
+                No track fits? Build whatever your squad's power actually is.
+                Judged on merit.
+              </p>
+              <span class="power-tag">Power: Undefined</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- TIMELINE SECTION with Character Images on Both Sides          -->
+    <!-- ============================================================ -->
+    <section id="timeline">
+      <!-- Background Image -->
+      <div class="timeline-bg-image" aria-hidden="true">
+        <img
+          src="{{ url_for('static', filename='images/marvelvsdc.jpg') }}"
+          alt=""
+        />
+      </div>
+
+      <!-- Marvel Character - Left Side -->
+      <div class="timeline-character-left" aria-hidden="true">
+        <img
+          src="{{ url_for('static', filename='images/heroes/marvelleft.png') }}"
+          alt="Marvel Character"
+        />
+      </div>
+
+      <!-- DC Character - Right Side -->
+      <div class="timeline-character-right" aria-hidden="true">
+        <img
+          src="{{ url_for('static', filename='images/heroes/dcright.png') }}"
+          alt="DC Character"
+        />
+      </div>
+
+      <!-- LightRays container -->
+      <div
+        id="lightrays-bg"
+        class="lightrays-container"
+        aria-hidden="true"
+      ></div>
+
+      <div class="wrap">
+        <div class="timeline-split">
+          <!-- Left: Intro -->
+          <div class="timeline-intro">
+            <div class="eyebrow">
+              <span class="timeline-orb" aria-hidden="true"></span>
+              Mission Clock
+            </div>
+            <h2 class="section-title">
+              Six hours.<br />
+              <span class="accent">One continuous</span><br />
+              build loop.
+            </h2>
+            <p class="section-sub">
+              The clock starts at 09:30 and runs straight through to a live jury
+              demo at close — no overnight break, no second day. Session 01
+              covers assembly through the first build push; Session 02 carries
+              you from lunch to the closing ceremony.
+            </p>
+          </div>
+
+          <!-- Right: Agenda -->
+          <div class="timeline-agenda-panel">
+            <!-- Tabs -->
+            <div class="timeline-day-tabs" role="tablist">
+              <button
+                class="timeline-day-tab is-active"
+                type="button"
+                role="tab"
+                aria-selected="true"
+                data-session="1"
+              >
+                <span class="td-label">Session 01 — Build &amp; Brief</span>
+                <span class="td-time">09:30 – 01:00 PM</span>
+              </button>
+              <button
+                class="timeline-day-tab"
+                type="button"
+                role="tab"
+                aria-selected="false"
+                data-session="2"
+              >
+                <span class="td-label">Session 02 — Push &amp; Demo</span>
+                <span class="td-time">01:00 – 05:30 PM</span>
+              </button>
+            </div>
+
+            <!-- Panel 1 -->
+            <div class="timeline-track" data-session-panel="1">
+              <div class="t-item peak">
+                <span class="t-dot filled" aria-hidden="true"></span>
+                <div class="t-time">09:30 — 10:00 AM</div>
+                <div class="t-title">Domain Draft &amp; Briefing</div>
+                <div class="t-desc">
+                  Squads lock in their power (domain), receive the judging
+                  rubric, and get environment access.
+                </div>
+                <span class="t-tag">Kickoff</span>
+              </div>
+              <div class="t-item peak">
+                <span class="t-dot filled" aria-hidden="true"></span>
+                <div class="t-time">10:00 — 01:00 PM</div>
+                <div class="t-title">Build Phase I — Vibe &amp; Ship</div>
+                <div class="t-desc">
+                  Core build window. Mentors rotate through squads on request.
+                  First checkpoint ping at 11:30 AM.
+                </div>
+                <span class="t-tag">3 hours · build</span>
+              </div>
+            </div>
+
+            <!-- Panel 2 -->
+            <div class="timeline-track" data-session-panel="2" hidden>
+              <div class="t-item">
+                <span class="t-dot" aria-hidden="true"></span>
+                <div class="t-time">01:00 — 01:30 PM</div>
+                <div class="t-title">Power Recharge (Lunch)</div>
+                <div class="t-desc">
+                  Food, a breather, and an optional lightning talk from a past
+                  winning squad.
+                </div>
+              </div>
+              <div class="t-item peak">
+                <span class="t-dot filled" aria-hidden="true"></span>
+                <div class="t-time">01:30 — 03:30 PM</div>
+                <div class="t-title">Build Phase II — Final Push</div>
+                <div class="t-desc">
+                  Last stretch to polish and prep your demo. Second checkpoint
+                  ping at 02:30 PM.
+                </div>
+                <span class="t-tag">2 hours · build</span>
+              </div>
+              <div class="t-item">
+                <span class="t-dot" aria-hidden="true"></span>
+                <div class="t-time">03:30 — 03:45 PM</div>
+                <div class="t-title">Code Freeze</div>
+                <div class="t-desc">
+                  Repositories lock. No further commits count toward judging
+                  after this point.
+                </div>
+                <span class="t-tag">Lock</span>
+              </div>
+              <div class="t-item peak">
+                <span class="t-dot filled" aria-hidden="true"></span>
+                <div class="t-time">03:45 — 05:00 PM</div>
+                <div class="t-title">Demo &amp; Judging</div>
+                <div class="t-desc">
+                  4‑minute live demos per squad, followed by 2 minutes of judge
+                  questions.
+                </div>
+                <span class="t-tag">Finals</span>
+              </div>
+              <div class="t-item">
+                <span class="t-dot" aria-hidden="true"></span>
+                <div class="t-time">05:00 — 05:30 PM</div>
+                <div class="t-title">Results &amp; Closing Ceremony</div>
+                <div class="t-desc">
+                  Winners announced, prizes distributed, and the roster of hero
+                  codenames retired for the season.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Prizes section -->
+    <section id="prizes" class="section-alt halftone">
+      <div
+        class="img-slot slot-bleed dim"
+        data-label="Prizes background&#10;images/prizes-bg.jpg"
+      >
+        <img
+          src="{{ url_for('static', filename='images/prizebg3.jpg') }}"
+          alt=""
+        />
+      </div>
+      <div class="wrap">
+        <div class="prize-total reveal">
+          <div class="eyebrow eyebrow-center">Total Bounty</div>
+          <div class="amt">₹15,000</div>
+          <div class="lbl">Across all winning positions</div>
+        </div>
+
+        <div class="podium reveal-stagger">
+          <div class="p-card second">
+            <div
+              class="img-slot slot-card-sm"
+              data-label="images/prize-second.jpg"
+            >
+              <img
+                src="{{ url_for('static', filename='images/heroes/marc.jpg') }}"
+                alt=""
+              />
+            </div>
+            <div class="rank">Runner Up</div>
+            <div class="place">2nd</div>
+            <div class="amount">₹5,000</div>
+            <div class="note">+ Certificate + swag</div>
+          </div>
+          <div class="p-card first">
+            <div
+              class="img-slot slot-card-sm"
+              data-label="images/prize-first.jpg"
+            >
+              <img
+                src="{{ url_for('static', filename='images/heroes/Jake.jpg') }}"
+                alt=""
+              />
+            </div>
+            <div class="rank">Grand Winner</div>
+            <div class="place">1st</div>
+            <div class="amount">₹10,000</div>
+            <div class="note">+ Certificate + swag</div>
+          </div>
+          <div class="p-card third">
+            <div
+              class="img-slot slot-card-sm"
+              data-label="images/prize-third.jpg"
+            >
+              <img
+                src="{{ url_for('static', filename='images/heroes/steven.png') }}"
+                alt=""
+              />
+            </div>
+            <div class="rank">Second Runner Up</div>
+            <div class="place">3rd</div>
+            <div class="amount">Certificate &amp; Medal</div>
+            <div class="note">+ Swag pack</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ ELIGIBILITY / COLLEGE DETAILS ============ -->
+
+    <section id="eligibility">
+      <div class="wrap elig-grid">
+        <div class="reveal">
+          <div class="eyebrow">Who Can Fight</div>
+          <h2 class="section-title">Eligibility &amp; Rules</h2>
+
+          <ul class="elig-list">
+            <li>
+              <b>Eligibility</b>
+              Open to all undergraduate and postgraduate students from any
+              branch and any year.
+            </li>
+
+            <li>
+              <b>Squad Size</b>
+              1 to 3 members per team. Solo entries are also accepted.
+            </li>
+
+            <li>
+              <b>Cross-College Teams</b>
+              Allowed — teams can include members from different colleges.
+            </li>
+
+            <li>
+              <b>Experience Level</b>
+              Beginners are welcome. No prior hackathon experience is required.
+            </li>
+
+            <li>
+              <b>Registration Fee</b>
+              ₹200 per team.
+            </li>
+
+            <li>
+              <b>Code of Conduct</b>
+              Respectful collaboration is expected. Plagiarized or pre-built
+              projects will be disqualified.
+            </li>
+          </ul>
+        </div>
+
+        <div class="venue-card reveal">
+          <div
+            class="img-slot slot-card-wide venue-img-margin"
+            data-label="Campus / venue photo&#10;images/venue.jpg"
+          >
+            <img
+              src="{{ url_for('static', filename='images/wanda.jpg') }}"
+              alt="25 Years of Excellence"
+            />
+          </div>
+
+          <h3>Venue &amp; Logistics</h3>
+
+          <p>
+            <b class="label-chrome">Host Campus:</b>
+            Mar Athanasios College For Advanced Studies Tiruvalla (MACFAST)
+          </p>
+
+          <p>
+            <b class="label-chrome">Format:</b>
+            Hybrid — build on campus or join remotely through the online track.
+            Judging will be conducted live for both.
+          </p>
+
+          <p>
+            <b class="label-chrome">Provided:</b>
+            Wi-Fi, power outlets, workstation space, and mentor support
+            throughout the event.
+          </p>
+
+          <ul class="rules-list">
+            <li>Bring your own laptop and charger</li>
+            <li>College or student ID is mandatory at check-in</li>
+            <li>All code must be written within the 6-hour hackathon window</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+    <!-- ============ CODENAME GENERATOR ============ -->
+    <section class="section-alt">
+      <div class="wrap">
+        <div class="codename-box reveal">
+          <div
+            class="img-slot slot-card-sm codename-img"
+            data-label="images/codename-visual.png"
+          >
+            <img
+              src="{{ url_for('static', filename='images/bts.jpg') }}"
+              alt=""
+            />
+          </div>
+          <div class="eyebrow codename-eyebrow">Preview Your Identity</div>
+          <h2 class="section-title">Every squad gets a codename.</h2>
+          <p class="section-sub codename-sub-text">
+            Try the generator now — the real one runs automatically when you
+            register.
+          </p>
+          <div class="codename-result" id="codename-output">— — —</div>
+          <div class="codename-sub">
+            Tap to roll a new identity. Purely for vibes.
+          </div>
+          <div class="codename-button-wrap">
+            <button id="gen-codename-btn" class="btn btn-primary">
+              Generate Codename
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CONTACT ============ -->
+    <section id="contact">
+      <div class="wrap contact-grid">
+        <div class="reveal">
+          <div class="eyebrow">Get In Touch</div>
+          <h2 class="section-title">Questions before<br />you assemble?</h2>
+          <ul class="contact-list">
+            <li>
+              <span class="role">General Enquiries</span
+              ><span class="val"> assemblehackathonmacfast@gmail.com</span>
+            </li>
+            <li>
+              <span class="role">Event coordinator</span
+              ><span class="val">Arjun Santhosh - 8590939674</span>
+            </li>
+            <li>
+              <span class="role">Event coordinator</span
+              ><span class="val">Aneeta Achankunju - 81369 86396</span>
+            </li>
+            <li>
+              <span class="role">Event coordinator</span
+              ><span class="val">Abi Binu - 85906 57748</span>
+            </li>
+            <li>
+              <span class="role">Event coordinator</span
+              ><span class="val">Rojin v saji - 89433 70713</span>
+            </li>
+            <li>
+              <span class="role">Campus Address</span
+              ><span class="val">MACFAST,Pathanamthitta,Kerala,India</span>
+            </li>
+          </ul>
+        </div>
+        <div class="reveal">
+          <div class="eyebrow">FAQ</div>
+          <details class="faq-item" open>
+            <summary>Do I need a team before I register?</summary>
+            <p>
+              Yes — squads of 2 to 4. If you don't have a full squad, list
+              yourself as a solo applicant on the register page and we'll help
+              you slot into one before the event.
+            </p>
+          </details>
+          <details class="faq-item">
+            <summary>Is there a registration fee?</summary>
+            <p>
+              Yes — a flat ₹200 per squad, whether you compete on-campus or
+              remotely.
+            </p>
+          </details>
+          <details class="faq-item">
+            <summary>Can non-CS students join?</summary>
+            <p>
+              Absolutely. Vibe coding welcomes design, product, and no-code
+              contributors — every squad just needs at least one member
+              comfortable shipping code.
+            </p>
+          </details>
+          <details class="faq-item">
+            <summary>What does "vibe coding" mean here?</summary>
+            <p>
+              Building fast and iteratively with AI-assisted tools, rapid
+              prototyping, and a focus on shipping a working demo over a
+              polished pitch deck.
+            </p>
+          </details>
+        </div>
+        <div class="socials">
+          <a
+            href="https://www.instagram.com/macfastofficial?igsi=azAxZXpsZ3hscTR4"
+            >INSTAGRAM</a
+          ><a href="https://x.com/MACFAST_COLLEGE">X</a
+          ><a href="https://www.linkedin.com/school/macfast-2001/">LINKED IN</a
+          ><a href="https://www.facebook.com/share/19pjCqjJ8c/">FACEBOOK</a>
+        </div>
+      </div>
+    </section>
+
+  <!-- ============ FOOTER ============ -->
+<footer>
+  <div
+    class="img-slot slot-bleed dim"
+    data-label="Footer background&#10;images/footer-bg.jpg"
+  >
+    <img
+      src="{{ url_for('static', filename='images/footer-bg.jpg') }}"
+      alt=""
+    >
+  </div>
+
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="{{ url_for('index') }}" class="brand">
+          <span class="dot"></span>ASSEMBLE
+        </a>
+
+        <p>
+          A 6-hour vibe coding hackathon where every squad earns a hero
+          codename and a power to build with.
+        </p>
+      </div>
+
+      <div class="footer-col">
+        <h4>Event</h4>
+        <a href="#about">About</a>
+        <a href="#domains">Domains</a>
+        <a href="#timeline">Timeline</a>
+        <a href="#prizes">Prizes</a>
+      </div>
+
+      <div class="footer-col">
+        <h4>Participate</h4>
+        <a href="{{ url_for('register') }}">Register Squad</a>
+        <a href="{{ url_for('login') }}">Log In</a>
+        <a href="#eligibility">Eligibility</a>
+        <a href="#contact">Contact</a>
+      </div>
+
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <a href="#">Code of Conduct</a>
+        <a href="#">Terms</a>
+        <a href="#">Privacy</a>
+      </div>
+    </div>
+
+    <!-- College location -->
+    <div class="footer-location">
+      <div class="footer-location-info">
+        <div class="eyebrow">Event Location</div>
+
+        <h3>MACFAST, Tiruvalla</h3>
+
+        <p>
+          Mar Athanasios College for Advanced Studies Tiruvalla,
+          Pathanamthitta, Kerala.
+        </p>
+
+        <a
+          href="https://www.google.com/maps/search/?api=1&query=Mar+Athanasios+College+For+Advanced+Studies+Tiruvalla"
+          class="btn btn-ghost btn-sm"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Get Directions ↗
+        </a>
+      </div>
+
+      <div class="footer-map">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3936.5481397597364!2d76.58206867478506!3d9.373192790702563!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3b06247260536859%3A0x47b80c2e1ce414bd!2sMar%20Athanasios%20College%20For%20Advanced%20Studies%20Tiruvalla%20(MACFAST)%20%7C%20Tiruvalla!5e0!3m2!1sen!2sin!4v1788422320915!5m2!1sen!2sin"
+          title="MACFAST College location"
+          loading="lazy"
+          allowfullscreen
+          referrerpolicy="strict-origin-when-cross-origin"
+        ></iframe>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>
+        © 2026 ASSEMBLE Hackathon · Built for the vibe coding generation
+      </span>
+
+      <div class="socials">
+        <a href="#">IG</a>
+        <a href="#">X</a>
+        <a href="#">IN</a>
+        <a href="#">DC</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <script type="text/babel">
+      // ============================================================
+      // DRIFT WALL REACT COMPONENT (inlined for demo)
+      // ============================================================
+      const {
+        useState,
+        useEffect,
+        useRef,
+        useMemo,
+        useCallback,
+        useLayoutEffect,
+      } = React;
+
+      // --- DriftWall component (simplified inline version) ---
+      const DriftWall = ({
+        items,
+        columns = 5,
+        tileWidth = 200,
+        tileHeight = 132,
+        gap = 18,
+        radius = 14,
+        tilt = 16,
+        turn = -14,
+        roll = 0,
+        perspective = 1200,
+        depth = 120,
+        speed = 42,
+        direction = "up",
+        variance = 0.45,
+        parallax = 0.6,
+        pauseOnHover = false,
+        lift = 64,
+        fade = 0.6,
+        dim = 0.55,
+        grayscale = false,
+        overlayColor = "#060010",
+      }) => {
+        const containerRef = useRef(null);
+        const planeRef = useRef(null);
+        const trackRefs = useRef([]);
+        const rafRef = useRef(null);
+        const offsetsRef = useRef([]);
+        const velocitiesRef = useRef([]);
+        const hoveredColRef = useRef(-1);
+        const wallHoveredRef = useRef(false);
+        const pointerRef = useRef({ x: 0, y: 0 });
+        const pointerDampedRef = useRef({ x: 0, y: 0 });
+        const lastTsRef = useRef(null);
+        const [containerHeight, setContainerHeight] = useState(600);
+        const [activeId, setActiveId] = useState(null);
+        const activeIdRef = useRef(null);
+        const [reduced, setReduced] = useState(false);
+
+        useEffect(() => {
+          const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+          setReduced(mq.matches);
+          const onChange = (e) => setReduced(e.matches);
+          mq.addEventListener("change", onChange);
+          return () => mq.removeEventListener("change", onChange);
+        }, []);
+
+        const columnItems = useMemo(() => {
+          const cols = Array.from({ length: columns }, () => []);
+          items.forEach((item, i) => cols[i % columns].push(item));
+          return cols.map((col) => (col.length ? col : items.slice(0, 1)));
+        }, [items, columns]);
+
+        const columnMeta = useMemo(() => {
+          const unit = tileHeight + gap;
+          return columnItems.map((col) => {
+            const copyHeight = Math.max(unit, col.length * unit);
+            const copies = Math.max(
+              2,
+              Math.ceil((containerHeight * 1.6) / copyHeight) + 1,
+            );
+            return { copyHeight, copies };
+          });
+        }, [columnItems, tileHeight, gap, containerHeight]);
+
+        useLayoutEffect(() => {
+          if (!containerRef.current) return;
+          const ro = new ResizeObserver(([entry]) => {
+            setContainerHeight(entry.contentRect.height || 600);
+          });
+          ro.observe(containerRef.current);
+          return () => ro.disconnect();
+        }, []);
+
+        const baseVelocities = useMemo(() => {
+          const dirSign = direction === "up" ? 1 : -1;
+          return columnItems.map((_, c) => {
+            const altSign = c % 2 === 0 ? 1 : -1;
+            const pseudo = ((c * 0.6180339887 + 0.35) % 1) * 2 - 1;
+            return speed * (1 + variance * pseudo) * dirSign * altSign;
+          });
+        }, [columnItems, speed, direction, variance]);
+
+        useEffect(() => {
+          offsetsRef.current = columnMeta.map(
+            (meta, c) => meta.copyHeight * ((c * 0.37) % 1),
+          );
+          velocitiesRef.current = columnItems.map(() => 0);
+        }, [columnMeta, columnItems]);
+
+        const applyPlaneTransform = useCallback(
+          (px, py) => {
+            const plane = planeRef.current;
+            if (!plane) return;
+            plane.style.transform = `translate(-50%, -50%) scale(1.18) rotateX(${tilt + py}deg) rotateY(${turn + px}deg) rotateZ(${roll}deg) translateZ(${-depth}px)`;
+          },
+          [tilt, turn, roll, depth],
+        );
+
+        useEffect(() => {
+          const animate = (ts) => {
+            if (lastTsRef.current === null) lastTsRef.current = ts;
+            const dt = Math.min(
+              0.05,
+              Math.max(0, ts - lastTsRef.current) / 1000,
+            );
+            lastTsRef.current = ts;
+
+            const maxTilt = parallax * 8;
+            const targetX = pointerRef.current.x * maxTilt;
+            const targetY = -pointerRef.current.y * maxTilt;
+            const damp = 1 - Math.exp(-dt / 0.12);
+            pointerDampedRef.current.x +=
+              (targetX - pointerDampedRef.current.x) * damp;
+            pointerDampedRef.current.y +=
+              (targetY - pointerDampedRef.current.y) * damp;
+            applyPlaneTransform(
+              pointerDampedRef.current.x,
+              pointerDampedRef.current.y,
+            );
+
+            if (!reduced) {
+              for (let c = 0; c < trackRefs.current.length; c++) {
+                const meta = columnMeta[c];
+                if (!meta) continue;
+                const paused = wallHoveredRef.current && pauseOnHover;
+                const factor = paused || hoveredColRef.current === c ? 0 : 1;
+                const target = baseVelocities[c] * factor;
+                const ease = 1 - Math.exp(-dt / (target === 0 ? 0.16 : 0.28));
+                velocitiesRef.current[c] +=
+                  (target - velocitiesRef.current[c]) * ease;
+                let next =
+                  (offsetsRef.current[c] ?? 0) + velocitiesRef.current[c] * dt;
+                next =
+                  ((next % meta.copyHeight) + meta.copyHeight) %
+                  meta.copyHeight;
+                offsetsRef.current[c] = next;
+                const el = trackRefs.current[c];
+                if (el) el.style.transform = `translate3d(0, ${-next}px, 0)`;
+              }
+            }
+
+            rafRef.current = requestAnimationFrame(animate);
+          };
+
+          rafRef.current = requestAnimationFrame(animate);
+          return () => {
+            if (rafRef.current) cancelAnimationFrame(rafRef.current);
+            rafRef.current = null;
+            lastTsRef.current = null;
+          };
+        }, [
+          baseVelocities,
+          columnMeta,
+          pauseOnHover,
+          parallax,
+          reduced,
+          applyPlaneTransform,
+        ]);
+
+        const activate = useCallback((id, index) => {
+          activeIdRef.current = id;
+          hoveredColRef.current = index;
+          setActiveId(id);
+        }, []);
+
+        const release = useCallback(() => {
+          activeIdRef.current = null;
+          hoveredColRef.current = -1;
+          setActiveId(null);
+        }, []);
+
+        const handlePointerMove = useCallback(
+          (e) => {
+            const rect = containerRef.current?.getBoundingClientRect();
+            if (!rect) return;
+            if (parallax > 0 && !reduced) {
+              pointerRef.current = {
+                x: (e.clientX - rect.left) / rect.width - 0.5,
+                y: (e.clientY - rect.top) / rect.height - 0.5,
+              };
+            }
+            const hit = document.elementFromPoint(e.clientX, e.clientY);
+            const tile =
+              hit && hit.closest ? hit.closest("[data-tile-id]") : null;
+            if (!tile) return;
+            const id = tile.dataset.tileId;
+            if (id === activeIdRef.current) return;
+            activeIdRef.current = id;
+            hoveredColRef.current = Number(tile.dataset.col);
+            setActiveId(id);
+          },
+          [parallax, reduced],
+        );
+
+        const handlePointerLeaveWall = useCallback(() => {
+          wallHoveredRef.current = false;
+          pointerRef.current = { x: 0, y: 0 };
+          release();
+        }, [release]);
+
+        const cssVars = useMemo(
+          () => ({
+            "--dw-tile-w": `${tileWidth}px`,
+            "--dw-tile-h": `${tileHeight}px`,
+            "--dw-gap": `${gap}px`,
+            "--dw-radius": `${radius}px`,
+            "--dw-perspective": `${perspective}px`,
+            "--dw-lift": `${lift}px`,
+            "--dw-dim": dim,
+            "--dw-gray": grayscale ? 1 : 0,
+            "--dw-overlay": overlayColor,
+            "--dw-edge": `${Math.max(0, (1 - fade) * 100)}%`,
+          }),
+          [
+            tileWidth,
+            tileHeight,
+            gap,
+            radius,
+            perspective,
+            lift,
+            dim,
+            grayscale,
+            overlayColor,
+            fade,
+          ],
+        );
+
+        const renderTile = (item, id, colIndex) => {
+          const inner = (
+            <span className="drift-wall__inner">
+              <img
+                src={item.image}
+                alt={item.title ?? ""}
+                loading="lazy"
+                decoding="async"
+                draggable={false}
+              />
+              <span className="drift-wall__overlay" aria-hidden="true" />
+            </span>
+          );
+          const commonProps = {
+            className: `drift-wall__tile${activeId === id ? " is-active" : ""}`,
+            "data-tile-id": id,
+            "data-col": colIndex,
+            onFocus: () => activate(id, colIndex),
+            onBlur: release,
+          };
+          if (item.href) {
+            return React.createElement(
+              "a",
+              {
+                key: id,
+                href: item.href,
+                target: "_blank",
+                rel: "noreferrer noopener",
+                ...commonProps,
+              },
+              inner,
+            );
+          }
+          return React.createElement(
+            "div",
+            {
+              key: id,
+              tabIndex: 0,
+              role: "button",
+              "aria-label": item.title ?? "tile",
+              ...commonProps,
+            },
+            inner,
+          );
+        };
+
+        const rootClass = ["drift-wall", reduced ? "drift-wall--reduced" : ""]
+          .filter(Boolean)
+          .join(" ");
+
+        return React.createElement(
+          "div",
+          {
+            ref: containerRef,
+            className: rootClass,
+            style: cssVars,
+            onPointerMove: handlePointerMove,
+            onPointerEnter: () => {
+              wallHoveredRef.current = true;
+            },
+            onPointerLeave: handlePointerLeaveWall,
+            role: "group",
+            "aria-label": "Drifting wall of tiles",
+          },
+          React.createElement(
+            "div",
+            { ref: planeRef, className: "drift-wall__plane" },
+            columnItems.map((col, c) => {
+              const meta = columnMeta[c];
+              const copies = Array.from({ length: meta.copies });
+              return React.createElement(
+                "div",
+                { className: "drift-wall__col", key: `col-${c}` },
+                React.createElement(
+                  "div",
+                  {
+                    className: "drift-wall__track",
+                    ref: (el) => {
+                      trackRefs.current[c] = el;
+                    },
+                  },
+                  copies.map((_, copyIndex) =>
+                    col.map((item, itemIndex) =>
+                      renderTile(item, `${c}-${copyIndex}-${itemIndex}`, c),
+                    ),
+                  ),
+                ),
+              );
+            }),
+          ),
+        );
+      };
+
+      // --- Mount DriftWall with sample data ---
+      const sampleItems = [
+        {
+          image: "images/scrollimages/(1) Home _ X.jpg",
+          title: "AI Assistant",
+          href: "#",
+        },
+        {
+          image: "images/scrollimages/AI Assistant.jpg",
+          title: "Health Monitor",
+          href: "#",
+        },
+        {
+          image: "images/scrollimages/Analytics.jpg",
+          title: "FinTech Dashboard",
+          href: "#",
+        },
+        {
+          image: "images/scrollimages/AR Experience.jpg",
+          title: "Climate Tracker",
+          href: "#",
+        },
+        {
+          image: "images/scrollimages/Web3 Wallet.jpg",
+          title: "Web3 Wallet",
+          href: "#",
+        },
+        {
+          image: "images/scrollimages/AR Experience.jpg",
+          title: "AR Experience",
+          href: "#",
+        },
+        {
+          image: "images/scrollimages/Dev Tool.jpg",
+          title: "Dev Tool",
+          href: "#",
+        },
+        {
+          image: "images/scrollimages/Game Prototype.jpg",
+          title: "Game Prototype",
+          href: "#",
+        },
+        {
+          image: "images/scrollimages/E-commerce.jpg",
+          title: "Social App",
+          href: "#",
+        },
+        {
+          image: "images/scrollimages/Education Platform.jpg",
+          title: "Data Viz",
+          href: "#",
+        },
+        {
+          image: "images/scrollimages/farming.jpg",
+          title: "Music Tool",
+          href: "#",
+        },
+        {
+          image: "images/scrollimages/FinTech Dashboard.jpg",
+          title: "Education Platform",
+          href: "#",
+        },
+        {
+          image: "images/scrollimages/Health Monitor.jpg",
+          title: "E-commerce",
+          href: "#",
+        },
+        {
+          image: "images/scrollimages/nature.jpg",
+          title: "Analytics",
+          href: "#",
+        },
+        {
+          image: "images/scrollimages/Game Prototype.jpg",
+          title: "AI Art",
+          href: "#",
+        },
+      ];
+
+      ReactDOM.createRoot(
+        document.getElementById("drift-wall-container"),
+      ).render(
+        React.createElement(DriftWall, {
+          items: sampleItems,
+          columns: 5,
+          tileWidth: 200,
+          tileHeight: 132,
+          gap: 18,
+          tilt: 16,
+          turn: -14,
+          perspective: 1200,
+          depth: 120,
+          speed: 42,
+          direction: "up",
+          variance: 0.45,
+          parallax: 0.6,
+          lift: 64,
+          fade: 0.6,
+          dim: 0.55,
+          overlayColor: "#060010",
+          radius: 14,
+          pauseOnHover: false,
+          grayscale: false,
+        }),
+      );
+    </script>
+
+    <!-- Inject DriftWall styles -->
+    <style>
+      /* ============================================================
+     DRIFT WALL STYLES (inline)
+     ============================================================ */
+      .drift-wall {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        perspective: var(--dw-perspective, 1200px);
+        perspective-origin: 50% 50%;
+        --dw-tile-w: 200px;
+        --dw-tile-h: 132px;
+        --dw-gap: 18px;
+        --dw-radius: 14px;
+        --dw-lift: 64px;
+        --dw-dim: 0.55;
+        --dw-gray: 0;
+        --dw-overlay: #060010;
+        --dw-edge: 40%;
+        -webkit-mask-image:
+          radial-gradient(
+            ellipse 78% 82% at 50% 46%,
+            #000 var(--dw-edge),
+            transparent 100%
+          ),
+          linear-gradient(to top, #000 var(--dw-edge), transparent 100%);
+        -webkit-mask-composite: source-in;
+        mask-image:
+          radial-gradient(
+            ellipse 78% 82% at 50% 46%,
+            #000 var(--dw-edge),
+            transparent 100%
+          ),
+          linear-gradient(to top, #000 var(--dw-edge), transparent 100%);
+        mask-composite: intersect;
+      }
+
+      .drift-wall__plane {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        display: flex;
+        flex-direction: row;
+        transform-style: preserve-3d;
+        cursor: pointer;
+        transform-origin: 50% 50%;
+        will-change: transform;
+      }
+
+      .drift-wall__col {
+        position: relative;
+        width: calc(var(--dw-tile-w) + var(--dw-gap));
+        transform-style: preserve-3d;
+      }
+
+      .drift-wall__track {
+        display: flex;
+        flex-direction: column;
+        will-change: transform;
+        transform-style: preserve-3d;
+      }
+
+      .drift-wall__tile {
+        position: relative;
+        display: block;
+        width: 100%;
+        height: calc(var(--dw-tile-h) + var(--dw-gap));
+        flex: 0 0 auto;
+        outline: none;
+        transform-style: preserve-3d;
+      }
+
+      .drift-wall__inner {
+        position: absolute;
+        inset: calc(var(--dw-gap) / 2);
+        display: block;
+        border-radius: var(--dw-radius);
+        overflow: hidden;
+        background: #0b0b12;
+        opacity: var(--dw-dim);
+        transform: translateZ(0);
+        pointer-events: none;
+        transition:
+          transform 0.42s cubic-bezier(0.22, 1, 0.36, 1),
+          opacity 0.42s cubic-bezier(0.22, 1, 0.36, 1),
+          box-shadow 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      .drift-wall__tile img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        filter: grayscale(var(--dw-gray)) saturate(0.92);
+        transition: filter 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+        user-select: none;
+        -webkit-user-drag: none;
+      }
+
+      .drift-wall__overlay {
+        position: absolute;
+        inset: 0;
+        background: var(--dw-overlay);
+        opacity: 0.42;
+        pointer-events: none;
+        transition: opacity 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      .drift-wall__tile.is-active .drift-wall__inner,
+      .drift-wall__tile:focus-visible .drift-wall__inner {
+        opacity: 1;
+        transform: translateZ(var(--dw-lift));
+        box-shadow: 0 24px 60px -18px rgba(0, 0, 0, 0.7);
+      }
+
+      .drift-wall__tile.is-active img,
+      .drift-wall__tile:focus-visible img {
+        filter: grayscale(0) saturate(1.05);
+      }
+
+      .drift-wall__tile.is-active .drift-wall__overlay,
+      .drift-wall__tile:focus-visible .drift-wall__overlay {
+        opacity: 0;
+      }
+
+      .drift-wall__tile:focus-visible .drift-wall__inner {
+        box-shadow:
+          0 24px 60px -18px rgba(0, 0, 0, 0.7),
+          0 0 0 2px rgba(255, 255, 255, 0.9);
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .drift-wall__plane,
+        .drift-wall__track {
+          will-change: auto;
+        }
+      }
+    </style>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const container = document.getElementById("lightrays-bg");
+        if (!container) return;
+
+        // Optional configuration – tweak to your liking
+        const config = {
+          raysOrigin: "top-center",
+          raysColor: "#6c5ce7", // soft purple
+          raysSpeed: 0.8,
+          lightSpread: 0.6,
+          rayLength: 2.5,
+          pulsating: true,
+          fadeDistance: 1.2,
+          saturation: 0.9,
+          followMouse: true,
+          mouseInfluence: 0.08,
+          noiseAmount: 0.05,
+          distortion: 0.02,
+        };
+        const lightRays = new LightRays(container, config);
+        window.lightRays = lightRays;
+        const tabs = document.querySelectorAll(".timeline-day-tab");
+        const panels = document.querySelectorAll(".timeline-track");
+
+        tabs.forEach((tab) => {
+          tab.addEventListener("click", function () {
+            const session = this.dataset.session;
+            tabs.forEach((t) => {
+              t.classList.remove("is-active");
+              t.setAttribute("aria-selected", "false");
+            });
+            this.classList.add("is-active");
+            this.setAttribute("aria-selected", "true");
+
+            panels.forEach((p) => {
+              p.hidden = p.dataset.sessionPanel !== session;
+            });
+          });
+        });
+      });
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ogl/0.0.79/ogl.min.js"></script>
+    <script
+      type="module"
+      src="{{ url_for('static', filename='js/gridscan-bg.js') }}"
+    ></script>
+    <script
+      type="module"
+      src="{{ url_for('static', filename='js/evil-eye-bg.js') }}"
+    ></script>
+    <script
+      type="module"
+      src="{{ url_for('static', filename='js/timeline-hyperspeed.js') }}"
+    ></script>
+    <script
+      type="module"
+      src="{{ url_for('static', filename='js/timeline-orb.js') }}"
+    ></script>
+    <script
+      type="module"
+      src="{{ url_for('static', filename='js/lightray.js') }}"
+    ></script>
+    <script src="{{ url_for('static', filename='js/timeline-tabs.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/domain.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/floating-line.js') }}"></script>
+
+    <script type="module">
+      import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js";
+
+      // ============================================================
+      // FLOATING LINES BACKGROUND CLASS
+      // ============================================================
+      class FloatingLinesBackground {
+        constructor(container, options = {}) {
+          this.container = container;
+          this.options = {
+            enabledWaves: ["top", "middle", "bottom"],
+            lineCount: 8,
+            lineDistance: 8,
+            bendRadius: 8,
+            bendStrength: -2,
+            interactive: true,
+            parallax: true,
+            animationSpeed: 1,
+            gradientStart: "#e945f5",
+            gradientMid: "#6f6f6f",
+            gradientEnd: "#6a6a6a",
+            ...options,
+          };
+
+          this.clock = new THREE.Clock();
+          this.mouse = new THREE.Vector2(-1000, -1000);
+          this.targetMouse = new THREE.Vector2(-1000, -1000);
+          this.mouseInfluence = 0;
+          this.targetInfluence = 0;
+          this.parallaxOffset = new THREE.Vector2(0, 0);
+          this.targetParallax = new THREE.Vector2(0, 0);
+
+          this.init();
+        }
+
+        init() {
+          // Setup scene
+          this.scene = new THREE.Scene();
+
+          // Setup camera
+          this.camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+          this.camera.position.z = 1;
+
+          // Setup renderer
+          this.renderer = new THREE.WebGLRenderer({
+            antialias: true,
+            alpha: false,
+          });
+          this.renderer.setPixelRatio(
+            Math.min(window.devicePixelRatio || 1, 2),
+          );
+          this.renderer.domElement.style.width = "100%";
+          this.renderer.domElement.style.height = "100%";
+          this.container.appendChild(this.renderer.domElement);
+
+          // Create uniforms
+          this.uniforms = this.createUniforms();
+
+          // Create material
+          this.material = new THREE.ShaderMaterial({
+            uniforms: this.uniforms,
+            vertexShader: this.getVertexShader(),
+            fragmentShader: this.getFragmentShader(),
+          });
+
+          // Create mesh
+          this.geometry = new THREE.PlaneGeometry(2, 2);
+          this.mesh = new THREE.Mesh(this.geometry, this.material);
+          this.scene.add(this.mesh);
+
+          // Setup event listeners
+          this.setupEvents();
+
+          // Setup resize
+          this.resize();
+          window.addEventListener("resize", () => this.resize());
+
+          // Start animation loop
+          this.animate();
+        }
+
+        createUniforms() {
+          const gradientColors = [
+            this.options.gradientStart,
+            this.options.gradientMid,
+            this.options.gradientEnd,
+          ].filter((c) => c);
+
+          const maxStops = 8;
+          const lineGradient = Array.from(
+            { length: maxStops },
+            () => new THREE.Vector3(1, 1, 1),
+          );
+
+          gradientColors.slice(0, maxStops).forEach((hex, i) => {
+            const color = this.hexToVec3(hex);
+            lineGradient[i].set(color.x, color.y, color.z);
+          });
+
+          return {
+            iTime: { value: 0 },
+            iResolution: { value: new THREE.Vector3(1, 1, 1) },
+            animationSpeed: { value: this.options.animationSpeed || 1 },
+
+            enableTop: { value: this.options.enabledWaves.includes("top") },
+            enableMiddle: {
+              value: this.options.enabledWaves.includes("middle"),
+            },
+            enableBottom: {
+              value: this.options.enabledWaves.includes("bottom"),
+            },
+
+            topLineCount: {
+              value:
+                typeof this.options.lineCount === "number"
+                  ? this.options.lineCount
+                  : this.options.lineCount[0] || 6,
+            },
+            middleLineCount: {
+              value:
+                typeof this.options.lineCount === "number"
+                  ? this.options.lineCount
+                  : this.options.lineCount[1] || 6,
+            },
+            bottomLineCount: {
+              value:
+                typeof this.options.lineCount === "number"
+                  ? this.options.lineCount
+                  : this.options.lineCount[2] || 6,
+            },
+
+            topLineDistance: {
+              value:
+                (typeof this.options.lineDistance === "number"
+                  ? this.options.lineDistance
+                  : this.options.lineDistance[0] || 8) * 0.01,
+            },
+            middleLineDistance: {
+              value:
+                (typeof this.options.lineDistance === "number"
+                  ? this.options.lineDistance
+                  : this.options.lineDistance[1] || 8) * 0.01,
+            },
+            bottomLineDistance: {
+              value:
+                (typeof this.options.lineDistance === "number"
+                  ? this.options.lineDistance
+                  : this.options.lineDistance[2] || 8) * 0.01,
+            },
+
+            topWavePosition: { value: new THREE.Vector3(10.0, 0.5, -0.4) },
+            middleWavePosition: { value: new THREE.Vector3(5.0, 0.0, 0.2) },
+            bottomWavePosition: { value: new THREE.Vector3(2.0, -0.7, 0.4) },
+
+            iMouse: { value: new THREE.Vector2(-1000, -1000) },
+            interactive: { value: this.options.interactive !== false },
+            bendRadius: { value: this.options.bendRadius || 8 },
+            bendStrength: { value: this.options.bendStrength || -2 },
+            bendInfluence: { value: 0 },
+
+            parallax: { value: this.options.parallax !== false },
+            parallaxStrength: { value: this.options.parallaxStrength || 0.2 },
+            parallaxOffset: { value: new THREE.Vector2(0, 0) },
+
+            lineGradient: { value: lineGradient },
+            lineGradientCount: { value: gradientColors.length },
+          };
+        }
+
+        hexToVec3(hex) {
+          let value = hex.trim();
+          if (value.startsWith("#")) {
+            value = value.slice(1);
+          }
+
+          let r = 255,
+            g = 255,
+            b = 255;
+
+          if (value.length === 3) {
+            r = parseInt(value[0] + value[0], 16);
+            g = parseInt(value[1] + value[1], 16);
+            b = parseInt(value[2] + value[2], 16);
+          } else if (value.length === 6) {
+            r = parseInt(value.slice(0, 2), 16);
+            g = parseInt(value.slice(2, 4), 16);
+            b = parseInt(value.slice(4, 6), 16);
+          }
+
+          return new THREE.Vector3(r / 255, g / 255, b / 255);
+        }
+
+        getVertexShader() {
+          return `
+      precision highp float;
+      void main() {
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+      }
+    `;
+        }
+
+        getFragmentShader() {
+          return `
+      precision highp float;
+      
+      uniform float iTime;
+      uniform vec3  iResolution;
+      uniform float animationSpeed;
+      
+      uniform bool enableTop;
+      uniform bool enableMiddle;
+      uniform bool enableBottom;
+      
+      uniform int topLineCount;
+      uniform int middleLineCount;
+      uniform int bottomLineCount;
+      
+      uniform float topLineDistance;
+      uniform float middleLineDistance;
+      uniform float bottomLineDistance;
+      
+      uniform vec3 topWavePosition;
+      uniform vec3 middleWavePosition;
+      uniform vec3 bottomWavePosition;
+      
+      uniform vec2 iMouse;
+      uniform bool interactive;
+      uniform float bendRadius;
+      uniform float bendStrength;
+      uniform float bendInfluence;
+      
+      uniform bool parallax;
+      uniform float parallaxStrength;
+      uniform vec2 parallaxOffset;
+      
+      uniform vec3 lineGradient[8];
+      uniform int lineGradientCount;
+      
+      const vec3 BLACK = vec3(0.0);
+      const vec3 PINK  = vec3(233.0, 71.0, 245.0) / 255.0;
+      const vec3 BLUE  = vec3(47.0, 75.0, 162.0) / 255.0;
+      
+      mat2 rotate(float r) {
+        return mat2(cos(r), sin(r), -sin(r), cos(r));
+      }
+      
+      vec3 background_color(vec2 uv) {
+        vec3 col = vec3(0.0);
+        float y = sin(uv.x - 0.2) * 0.3 - 0.1;
+        float m = uv.y - y;
+        col += mix(BLUE, BLACK, smoothstep(0.0, 1.0, abs(m)));
+        col += mix(PINK, BLACK, smoothstep(0.0, 1.0, abs(m - 0.8)));
+        return col * 0.5;
+      }
+      
+      vec3 getLineColor(float t, vec3 baseColor) {
+        if (lineGradientCount <= 0) {
+          return baseColor;
+        }
+        vec3 gradientColor;
+        if (lineGradientCount == 1) {
+          gradientColor = lineGradient[0];
+        } else {
+          float clampedT = clamp(t, 0.0, 0.9999);
+          float scaled = clampedT * float(lineGradientCount - 1);
+          int idx = int(floor(scaled));
+          float f = fract(scaled);
+          int idx2 = min(idx + 1, lineGradientCount - 1);
+          vec3 c1 = lineGradient[idx];
+          vec3 c2 = lineGradient[idx2];
+          gradientColor = mix(c1, c2, f);
+        }
+        return gradientColor * 0.5;
+      }
+      
+      float wave(vec2 uv, float offset, vec2 screenUv, vec2 mouseUv, bool shouldBend) {
+        float time = iTime * animationSpeed;
+        float x_offset = offset;
+        float x_movement = time * 0.1;
+        float amp = sin(offset + time * 0.2) * 0.3;
+        float y = sin(uv.x + x_offset + x_movement) * amp;
+        
+        if (shouldBend) {
+          vec2 d = screenUv - mouseUv;
+          float influence = exp(-dot(d, d) * bendRadius);
+          float bendOffset = (mouseUv.y - screenUv.y) * influence * bendStrength * bendInfluence;
+          y += bendOffset;
+        }
+        
+        float m = uv.y - y;
+        return 0.0175 / max(abs(m) + 0.01, 1e-3) + 0.01;
+      }
+      
+      void main() {
+        vec2 baseUv = (2.0 * gl_FragCoord.xy - iResolution.xy) / iResolution.y;
+        baseUv.y *= -1.0;
+        
+        if (parallax) {
+          baseUv += parallaxOffset;
+        }
+        
+        vec3 col = vec3(0.0);
+        vec3 b = lineGradientCount > 0 ? vec3(0.0) : background_color(baseUv);
+        vec2 mouseUv = vec2(0.0);
+        
+        if (interactive) {
+          mouseUv = (2.0 * iMouse - iResolution.xy) / iResolution.y;
+          mouseUv.y *= -1.0;
+        }
+        
+        if (enableBottom) {
+          for (int i = 0; i < bottomLineCount; ++i) {
+            float fi = float(i);
+            float t = fi / max(float(bottomLineCount - 1), 1.0);
+            vec3 lineCol = getLineColor(t, b);
+            float angle = bottomWavePosition.z * log(length(baseUv) + 1.0);
+            vec2 ruv = baseUv * rotate(angle);
+            col += lineCol * wave(
+              ruv + vec2(bottomLineDistance * fi + bottomWavePosition.x, bottomWavePosition.y),
+              1.5 + 0.2 * fi,
+              baseUv,
+              mouseUv,
+              interactive
+            ) * 0.2;
+          }
+        }
+        
+        if (enableMiddle) {
+          for (int i = 0; i < middleLineCount; ++i) {
+            float fi = float(i);
+            float t = fi / max(float(middleLineCount - 1), 1.0);
+            vec3 lineCol = getLineColor(t, b);
+            float angle = middleWavePosition.z * log(length(baseUv) + 1.0);
+            vec2 ruv = baseUv * rotate(angle);
+            col += lineCol * wave(
+              ruv + vec2(middleLineDistance * fi + middleWavePosition.x, middleWavePosition.y),
+              2.0 + 0.15 * fi,
+              baseUv,
+              mouseUv,
+              interactive
+            );
+          }
+        }
+        
+        if (enableTop) {
+          for (int i = 0; i < topLineCount; ++i) {
+            float fi = float(i);
+            float t = fi / max(float(topLineCount - 1), 1.0);
+            vec3 lineCol = getLineColor(t, b);
+            float angle = topWavePosition.z * log(length(baseUv) + 1.0);
+            vec2 ruv = baseUv * rotate(angle);
+            ruv.x *= -1.0;
+            col += lineCol * wave(
+              ruv + vec2(topLineDistance * fi + topWavePosition.x, topWavePosition.y),
+              1.0 + 0.2 * fi,
+              baseUv,
+              mouseUv,
+              interactive
+            ) * 0.1;
+          }
+        }
+        
+        gl_FragColor = vec4(col, 1.0);
+      }
+    `;
+        }
+
+        setupEvents() {
+          if (this.options.interactive !== false) {
+            const handlePointerMove = (event) => {
+              const rect = this.renderer.domElement.getBoundingClientRect();
+              const x = event.clientX - rect.left;
+              const y = event.clientY - rect.top;
+              const dpr = this.renderer.getPixelRatio();
+
+              this.targetMouse.set(x * dpr, (rect.height - y) * dpr);
+              this.targetInfluence = 1.0;
+
+              if (this.options.parallax !== false) {
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const offsetX = (x - centerX) / rect.width;
+                const offsetY = -(y - centerY) / rect.height;
+                const strength = this.options.parallaxStrength || 0.2;
+                this.targetParallax.set(offsetX * strength, offsetY * strength);
+              }
+            };
+
+            const handlePointerLeave = () => {
+              this.targetInfluence = 0.0;
+            };
+
+            this.renderer.domElement.addEventListener(
+              "pointermove",
+              handlePointerMove,
+            );
+            this.renderer.domElement.addEventListener(
+              "pointerleave",
+              handlePointerLeave,
+            );
+
+            this._cleanupEvents = () => {
+              this.renderer.domElement.removeEventListener(
+                "pointermove",
+                handlePointerMove,
+              );
+              this.renderer.domElement.removeEventListener(
+                "pointerleave",
+                handlePointerLeave,
+              );
+            };
+          }
+        }
+
+        resize() {
+          const width = this.container.clientWidth || 1;
+          const height = this.container.clientHeight || 1;
+
+          this.renderer.setSize(width, height, false);
+
+          const canvasWidth = this.renderer.domElement.width;
+          const canvasHeight = this.renderer.domElement.height;
+          this.uniforms.iResolution.value.set(canvasWidth, canvasHeight, 1);
+        }
+
+        animate() {
+          requestAnimationFrame(() => this.animate());
+
+          // Update time
+          this.uniforms.iTime.value = this.clock.getElapsedTime();
+
+          // Update mouse with damping
+          const damping = 0.05;
+          if (this.options.interactive !== false) {
+            this.mouse.lerp(this.targetMouse, damping);
+            this.uniforms.iMouse.value.copy(this.mouse);
+
+            this.mouseInfluence +=
+              (this.targetInfluence - this.mouseInfluence) * damping;
+            this.uniforms.bendInfluence.value = this.mouseInfluence;
+          }
+
+          // Update parallax
+          if (this.options.parallax !== false) {
+            this.parallaxOffset.lerp(this.targetParallax, damping);
+            this.uniforms.parallaxOffset.value.copy(this.parallaxOffset);
+          }
+
+          // Render
+          this.renderer.render(this.scene, this.camera);
+        }
+
+        dispose() {
+          if (this._cleanupEvents) {
+            this._cleanupEvents();
+          }
+          this.geometry.dispose();
+          this.material.dispose();
+          this.renderer.dispose();
+          if (this.renderer.domElement.parentElement) {
+            this.renderer.domElement.parentElement.removeChild(
+              this.renderer.domElement,
+            );
+          }
+        }
+      }
+
+      // ============================================================
+      // INITIALIZE FLOATING LINES BACKGROUND
+      // ============================================================
+      document.addEventListener("DOMContentLoaded", () => {
+        const container = document.getElementById("floating-lines-bg");
+
+        if (container) {
+          const bg = new FloatingLinesBackground(container, {
+            enabledWaves: ["top", "middle", "bottom"],
+            lineCount: 8,
+            lineDistance: 8,
+            bendRadius: 8,
+            bendStrength: -2,
+            interactive: true,
+            parallax: true,
+            animationSpeed: 1,
+            gradientStart: "#e945f5",
+            gradientMid: "#6f6f6f",
+            gradientEnd: "#6a6a6a",
+          });
+
+          // Store for cleanup if needed
+          window.__floatingLinesBg = bg;
+        }
+      });
+    </script>
+    <script>
+      initImageSlots();
+      initReveal();
+      initCountdown("2026-09-25T09:00:00+05:30");
+      initCodenameGenerator();
+    </script>
+  </body>
+</html>

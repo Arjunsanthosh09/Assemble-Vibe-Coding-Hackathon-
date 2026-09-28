@@ -1,0 +1,218 @@
+var jQuery = window.jQuery
+var cas_vars = window.cas_vars
+var cas_default_fields = window.cas_default_fields || {}
+
+jQuery(document).ready(($) => {
+  // Initialize form
+  initAdmissionForm()
+
+  function initAdmissionForm() {
+    // Remove any nice-select elements that might be created for our dropdowns
+    $(".nice-select.cas-form-select").remove()
+
+    // Make sure the course dropdown is visible but disabled initially
+    $("#cas-course").prop("disabled", true).show()
+
+    // Handle program type change
+    $("#cas-program-type").on("change", function () {
+      // Remove any nice-select elements again (in case they were recreated)
+      $(".nice-select.cas-form-select").remove()
+
+      var programType = $(this).val()
+
+      // Reset course dropdown
+      $("#cas-course")
+        .html('<option value="">' + (cas_vars.select_course_text || "Select Programme") + "</option>")
+        .prop("disabled", true)
+        .show() // Ensure it's visible
+
+      if (programType) {
+        // Show loading
+        $("#cas-course")
+          .html('<option value="">' + (cas_vars.loading_text || "Loading courses...") + "</option>")
+          .prop("disabled", true)
+          .show()
+
+        // Get courses via AJAX
+        $.ajax({
+          url: cas_vars.ajax_url,
+          type: "POST",
+          data: {
+            action: "cas_get_courses_by_program_type",
+            program_type: programType,
+            // No nonce needed
+          },
+          success: (response) => {
+            // Remove any nice-select elements again
+            $(".nice-select.cas-form-select").remove()
+
+            if (response.success && response.data.courses && response.data.courses.length > 0) {
+              // Reset dropdown
+              $("#cas-course").html(
+                '<option value="">' + (cas_vars.select_course_text || "Select Programme") + "</option>",
+              )
+
+              // Add courses
+              $.each(response.data.courses, (i, course) => {
+                $("#cas-course").append('<option value="' + course.id + '">' + course.name + "</option>")
+              })
+
+              // Enable dropdown
+              $("#cas-course").prop("disabled", false).show()
+
+              // Remove any nice-select elements that might have been created
+              $(".nice-select.cas-form-select").remove()
+            } else {
+              $("#cas-course")
+                .html(
+                  '<option value="">' +
+                    (cas_vars.no_courses_text || "No courses available for this program type") +
+                    "</option>",
+                )
+                .prop("disabled", true)
+                .show()
+            }
+          },
+          error: () => {
+            // Remove any nice-select elements again
+            $(".nice-select.cas-form-select").remove()
+
+            $("#cas-course")
+              .html('<option value="">' + (cas_vars.error_loading_courses || "Error loading courses") + "</option>")
+              .prop("disabled", true)
+              .show()
+          },
+        })
+      }
+    })
+
+    // Handle form submission
+    $("#cas-admission-form").on("submit", (e) => {
+      e.preventDefault()
+
+      // Clear previous errors
+      $(".cas-form-error").text("")
+
+      // Validate form
+      if (validateForm()) {
+        submitForm()
+      }
+    })
+
+    // Set an interval to periodically check and remove nice-select elements
+    setInterval(() => {
+      $(".nice-select.cas-form-select").remove()
+    }, 500)
+  }
+
+  function validateForm() {
+    var isValid = true
+
+    // Get default fields to check which ones are required
+    var defaultFields = cas_default_fields || {}
+
+    // Validate name
+    var name = $("#cas-student-name").val().trim()
+    var nameRequired = defaultFields.student_name ? defaultFields.student_name.required : true
+    if (nameRequired && !name) {
+      $("#cas-student-name-error").text(cas_vars.required_field || "This field is required")
+      isValid = false
+    }
+
+    // Validate phone
+    var phone = $("#cas-mobile").val().trim()
+    var phoneRequired = defaultFields.mobile ? defaultFields.mobile.required : true
+    if (phoneRequired && !phone) {
+      $("#cas-mobile-error").text(cas_vars.required_field || "This field is required")
+      isValid = false
+    } else if (phone && !/^\d{10,15}$/.test(phone.replace(/[^0-9]/g, ""))) {
+      $("#cas-mobile-error").text(cas_vars.invalid_phone || "Please enter a valid phone number")
+      isValid = false
+    }
+
+    // Validate WhatsApp
+    var whatsapp = $("#cas-whatsapp").val().trim()
+    var whatsappRequired = defaultFields.whatsapp ? defaultFields.whatsapp.required : true
+    if (whatsappRequired && !whatsapp) {
+      $("#cas-whatsapp-error").text(cas_vars.required_field || "This field is required")
+      isValid = false
+    } else if (whatsapp && !/^\d{10,15}$/.test(whatsapp.replace(/[^0-9]/g, ""))) {
+      $("#cas-whatsapp-error").text(cas_vars.invalid_phone || "Please enter a valid phone number")
+      isValid = false
+    }
+
+    // Validate email
+    var email = $("#cas-email").val().trim()
+    var emailRequired = defaultFields.email ? defaultFields.email.required : true
+    if (emailRequired && !email) {
+      $("#cas-email-error").text(cas_vars.required_field || "This field is required")
+      isValid = false
+    } else if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      $("#cas-email-error").text(cas_vars.invalid_email || "Please enter a valid email address")
+      isValid = false
+    }
+
+    // Validate program type
+    var programType = $("#cas-program-type").val()
+    var programTypeRequired = defaultFields.program_type ? defaultFields.program_type.required : true
+    if (programTypeRequired && !programType) {
+      $("#cas-program-type-error").text(cas_vars.required_field || "This field is required")
+      isValid = false
+    }
+
+    // Validate course
+    var course = $("#cas-course").val()
+    var courseRequired = defaultFields.course ? defaultFields.course.required : true
+    if (courseRequired && !course) {
+      $("#cas-course-error").text(cas_vars.required_field || "This field is required")
+      isValid = false
+    }
+
+    return isValid
+  }
+
+  function submitForm() {
+    // Show loading
+    $("#cas-loading").show()
+    $("#cas-admission-form").hide()
+
+    // Get form data
+    var formData = new FormData($("#cas-admission-form")[0])
+    formData.append("action", "cas_submit_application")
+    // No nonce needed
+
+    // Submit form via AJAX
+    $.ajax({
+      url: cas_vars.ajax_url,
+      type: "POST",
+      data: formData,
+      processData: false,
+      contentType: false,
+      success: (response) => {
+        // Hide loading
+        $("#cas-loading").hide()
+
+        if (response.success) {
+          // Show success message and homepage button
+          $("#cas-form-success").show()
+          $("#cas-homepage-button-container").show()
+
+          // Reset form
+          $("#cas-admission-form")[0].reset()
+        } else {
+          // Show error message
+          alert(response.data.message || cas_vars.submission_error || "Error submitting application")
+          $("#cas-admission-form").show()
+        }
+      },
+      error: () => {
+        // Hide loading
+        $("#cas-loading").hide()
+
+        // Show error message
+        alert(cas_vars.submission_error || "Error submitting application")
+        $("#cas-admission-form").show()
+      },
+    })
+  }
+})

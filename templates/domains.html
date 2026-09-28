@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Domains — ASSEMBLE Hackathon</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/domains.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/domains-fix.css') }}"
+    />
+  </head>
+  <body>
+    <header class="page-nav">
+      <a class="page-brand" href="{{ url_for('index') }}"
+        ><span></span>ASSEMBLE</a
+      >
+
+      <button
+        class="menu-toggle"
+        type="button"
+        id="domain-menu-toggle"
+        aria-label="Open navigation"
+        aria-expanded="false"
+        aria-controls="domain-links"
+      >
+        <span></span><span></span><span></span>
+      </button>
+
+      <nav id="domain-links" aria-label="Page navigation">
+        <a href="{{ url_for('college_events') }}">Events</a>
+        <a href="#announcements">Announcements</a>
+        <a href="{{ url_for('rules_and_regulations') }}">Rules & Regulations</a>
+        <a class="active" href="{{ url_for('domains') }}">Domains</a>
+        <a href="{{ url_for('timeline') }}">Timeline</a>
+
+        {% if session.get('user_id') %}<a href="{{ url_for('dashboard') }}"
+          >Dashboard</a
+        >{% else %}<a href="{{ url_for('login') }}">Log In</a>{% endif %}
+      </nav>
+    </header>
+    <main>
+      <section class="domain-hero">
+        <div class="grid-bg"></div>
+        <div>
+          <span class="kicker">CHOOSE YOUR POWER</span>
+          <h1>Four Domains.<br /><em>Infinite Ideas.</em></h1>
+          <p>
+            Select the arena that best represents the main purpose of your
+            solution. Your project will be judged on its merit, not on the
+            popularity of the domain.
+          </p>
+        </div>
+        <aside>
+          <span>Domain Draft</span><strong>04</strong>
+          <p>Official innovation tracks</p>
+          <a href="#domain-grid">View the roster ↓</a>
+        </aside>
+      </section>
+      <section class="domain-shell" id="domain-grid">
+        <div class="section-heading">
+          <div>
+            <span class="kicker">THE POWER ROSTER</span>
+            <h2>Available Domains</h2>
+          </div>
+          <p>Choose one primary domain during team registration.</p>
+        </div>
+        <div class="domain-grid">
+          <article class="domain-card vision">
+            <div class="domain-art">
+              <span>01</span
+              ><img
+                src="{{ url_for('static', filename='images/domains/vision.png') }}"
+                alt=""
+                onerror="this.hidden = true"
+              />
+            </div>
+            <div class="domain-content">
+              <span class="code">01 / VISION</span>
+              <h3>AI & Machine Learning</h3>
+              <p>
+                Agents, copilots, generative tools or applied machine
+                learning—anything that reasons, predicts, understands or
+                automates intelligently.
+              </p>
+              <div class="power">
+                <small>Power</small><strong>Precognition</strong>
+              </div>
+              <ul>
+                <li>AI agents and copilots</li>
+                <li>Prediction and recommendation</li>
+                <li>Computer vision or NLP</li>
+                <li>Generative applications</li>
+              </ul>
+            </div>
+          </article>
+          <article class="domain-card vitals">
+            <div class="domain-art">
+              <span>02</span
+              ><img
+                src="{{ url_for('static', filename='images/domains/vitals.png') }}"
+                alt=""
+                onerror="this.hidden = true"
+              />
+            </div>
+            <div class="domain-content">
+              <span class="code">02 / VITALS</span>
+              <h3>HealthTech</h3>
+              <p>
+                Diagnostics, patient tools, accessibility aids or wellness
+                trackers designed to create meaningful real-world health
+                utility.
+              </p>
+              <div class="power">
+                <small>Power</small><strong>Regeneration</strong>
+              </div>
+              <ul>
+                <li>Patient and hospital tools</li>
+                <li>Diagnostics and monitoring</li>
+                <li>Accessibility solutions</li>
+                <li>Mental health and wellness</li>
+              </ul>
+            </div>
+          </article>
+          <article class="domain-card terra">
+            <div class="domain-art">
+              <span>03</span
+              ><img
+                src="{{ url_for('static', filename='images/domains/terra.png') }}"
+                alt=""
+                onerror="this.hidden = true"
+              />
+            </div>
+            <div class="domain-content">
+              <span class="code">03 / TERRA</span>
+              <h3>Climate & Sustainability</h3>
+              <p>
+                Carbon tracking, circular economy tools or climate-resilient
+                infrastructure ideas built for a more sustainable future.
+              </p>
+              <div class="power">
+                <small>Power</small><strong>Elemental Control</strong>
+              </div>
+              <ul>
+                <li>Climate intelligence</li>
+                <li>Waste and circular economy</li>
+                <li>Energy or water solutions</li>
+                <li>Sustainable communities</li>
+              </ul>
+            </div>
+          </article>
+          <article class="domain-card open">
+            <div class="domain-art">
+              <span>04</span
+              ><img
+                src="{{ url_for('static', filename='images/domains/open.png') }}"
+                alt=""
+                onerror="this.hidden = true"
+              />
+            </div>
+            <div class="domain-content">
+              <span class="code">04 / OPEN</span>
+              <h3>Open Innovation</h3>
+              <p>
+                No track fits? Build what your squad believes should exist. Open
+                Innovation projects are evaluated on the same overall merit.
+              </p>
+              <div class="power">
+                <small>Power</small><strong>Undefined</strong>
+              </div>
+              <ul>
+                <li>FinTech or EdTech</li>
+                <li>Cybersecurity</li>
+                <li>Productivity and civic tools</li>
+                <li>Any original solution</li>
+              </ul>
+            </div>
+          </article>
+        </div>
+        <section class="domain-note">
+          <div>
+            <span class="kicker">SELECTION GUIDE</span>
+            <h2>Where does a mixed idea belong?</h2>
+            <p>
+              Choose the domain that represents the project’s main problem and
+              impact. For example, an AI diagnostic tool belongs in HealthTech
+              because healthcare is its primary purpose, even though it uses AI.
+            </p>
+          </div>
+          {% if session.get('user_id') %}<a href="{{ url_for('dashboard') }}"
+            >Return to Dashboard →</a
+          >{% else %}<a href="{{ url_for('register') }}"
+            >Register Your Squad →</a
+          >{% endif %}
+        </section>
+      </section>
+    </main>
+
+    <script>
+      // Mobile nav toggle — same self-contained pattern as the Events page
+      (function () {
+        var toggle = document.getElementById('domain-menu-toggle');
+        var nav = document.getElementById('domain-links');
+        if (!toggle || !nav) return;
+
+        function closeNav() {
+          nav.classList.remove('open');
+          toggle.setAttribute('aria-expanded', 'false');
+        }
+
+        toggle.addEventListener('click', function () {
+          var isOpen = nav.classList.toggle('open');
+          toggle.setAttribute('aria-expanded', String(isOpen));
+        });
+
+        nav.querySelectorAll('a').forEach(function (link) {
+          link.addEventListener('click', closeNav);
+        });
+
+        document.addEventListener('click', function (e) {
+          if (!nav.classList.contains('open')) return;
+          if (nav.contains(e.target) || toggle.contains(e.target)) return;
+          closeNav();
+        });
+
+        window.addEventListener('resize', function () {
+          if (window.innerWidth > 1000) closeNav();
+        });
+      })();
+    </script>
+  </body>
+</html>

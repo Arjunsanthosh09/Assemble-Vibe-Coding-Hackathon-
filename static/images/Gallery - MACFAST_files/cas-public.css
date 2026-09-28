@@ -1,0 +1,484 @@
+/**
+ * Public styles for the College Admission System plugin.
+ */
+
+/* Form Container */
+.cas-application-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue",
+    sans-serif;
+}
+
+.cas-form-title {
+  font-size: 28px;
+  margin-bottom: 15px;
+  color: var(--text-color, #333);
+}
+
+.cas-form-description {
+  margin-bottom: 30px;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--text-color, #333);
+}
+
+/* Form Sections */
+.cas-form-section {
+  margin-bottom: 30px;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: var(--border-radius, 4px);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.cas-form-section h3 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+  color: var(--text-color, #333);
+  font-size: 20px;
+}
+
+/* Form Fields */
+.cas-form-field {
+  margin-bottom: 20px;
+}
+
+.cas-form-field label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: var(--text-color, #333);
+}
+
+.cas-form-field .required {
+  color: #e53935;
+  margin-left: 3px;
+}
+
+.cas-form-field input[type="text"],
+.cas-form-field input[type="email"],
+.cas-form-field input[type="tel"],
+.cas-form-field input[type="date"],
+.cas-form-field input[type="number"],
+.cas-form-field textarea,
+.cas-form-field select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: var(--border-radius, 4px);
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--text-color, #333);
+  background-color: #fff;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.cas-form-field input:focus,
+.cas-form-field textarea:focus,
+.cas-form-field select:focus {
+  outline: none;
+  border-color: var(--primary-color, #4a90e2);
+  box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+}
+
+.cas-form-field select.cas-filtered {
+  border-left: 4px solid var(--primary-color, #4a90e2);
+  background-color: var(--secondary-color, #f5f9ff);
+}
+
+.cas-form-field select option {
+  padding: 8px;
+  background-color: #fff;
+  color: var(--text-color, #333);
+}
+
+.cas-form-field select option:first-child {
+  font-style: italic;
+  color: #777;
+}
+
+/* Radio Buttons */
+.cas-radio-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.cas-radio-label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-weight: normal;
+}
+
+.cas-radio-label input[type="radio"] {
+  margin-right: 8px;
+}
+
+/* Conditional Sections */
+.cas-conditional-section {
+  padding-left: 17px;
+  border-left: 3px solid var(--primary-color, #4a90e2);
+  background-color: var(--secondary-color, #f5f9ff);
+}
+
+/* Submit Button */
+.cas-form-submit {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.cas-submit-button {
+  padding: 12px 24px;
+  background-color: var(--primary-color, #4a90e2);
+  color: var(--button-text-color, #fff);
+  border: none;
+  border-radius: var(--border-radius, 4px);
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.cas-submit-button:hover {
+  background-color: var(--primary-color-darker, #3a80d2);
+}
+
+.cas-submit-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Messages */
+.cas-form-message {
+  margin-bottom: 20px;
+  padding: 15px;
+  border-radius: var(--border-radius, 4px);
+  font-size: 16px;
+  display: none;
+}
+
+.cas-form-message.success {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+  border: 1px solid #c8e6c9;
+}
+
+.cas-form-message.error {
+  background-color: #ffebee;
+  color: #c62828;
+  border: 1px solid #ffcdd2;
+}
+
+.cas-field-error {
+  color: #c62828;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+.cas-error-field {
+  border-color: #c62828 !important;
+}
+
+.cas-form-processing {
+  text-align: center;
+  padding: 15px;
+  font-style: italic;
+  color: var(--text-color, #333);
+}
+
+.cas-no-courses-message {
+  color: #c62828;
+  font-size: 14px;
+  margin-top: 5px;
+  font-style: italic;
+}
+
+/* Loading Indicator */
+.cas-loading-indicator {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.cas-spinner {
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid var(--primary-color, #4a90e2);
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  animation: cas-spin 1s linear infinite;
+  margin-right: 10px;
+}
+
+@keyframes cas-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Multi-step Form Styles */
+.cas-form-steps {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 30px;
+  position: relative;
+}
+
+.cas-form-steps::before {
+  content: "";
+  position: absolute;
+  top: 14px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: #e0e0e0;
+  z-index: 1;
+}
+
+.cas-step {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  flex: 1;
+}
+
+.cas-step-number {
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  border-radius: 50%;
+  background-color: #e0e0e0;
+  color: #666;
+  margin: 0 auto 10px;
+  font-weight: bold;
+  position: relative;
+  z-index: 2;
+}
+
+.cas-step.active .cas-step-number {
+  background-color: var(--primary-color, #4a90e2);
+  color: white;
+}
+
+.cas-step.completed .cas-step-number {
+  background-color: #4caf50;
+  color: white;
+}
+
+.cas-step-label {
+  font-size: 14px;
+  color: #666;
+}
+
+.cas-step.active .cas-step-label {
+  color: var(--primary-color, #4a90e2);
+  font-weight: bold;
+}
+
+.cas-step.completed .cas-step-label {
+  color: #4caf50;
+}
+
+.cas-form-step {
+  display: none;
+}
+
+.cas-form-step.active {
+  display: block;
+}
+
+.cas-form-navigation {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.cas-prev-button,
+.cas-next-button {
+  padding: 10px 20px;
+  background-color: var(--primary-color, #4a90e2);
+  color: white;
+  border: none;
+  border-radius: var(--border-radius, 4px);
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.cas-prev-button {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+.cas-prev-button:hover {
+  background-color: #e0e0e0;
+}
+
+.cas-next-button:hover {
+  background-color: var(--primary-color-darker, #3a80d2);
+}
+
+.cas-submit-button {
+  display: none;
+}
+
+.cas-form-step:last-child .cas-submit-button {
+  display: inline-block;
+}
+
+.cas-form-step:last-child .cas-next-button {
+  display: none;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .cas-application-container {
+    padding: 15px;
+  }
+
+  .cas-form-section {
+    padding: 15px;
+  }
+
+  .cas-radio-group {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .cas-form-steps {
+    flex-wrap: wrap;
+  }
+
+  .cas-step {
+    flex: 0 0 33.33%;
+    margin-bottom: 15px;
+  }
+}
+
+/* Fix for select elements in some themes */
+.cas-form-field select {
+  -webkit-appearance: menulist !important;
+  -moz-appearance: menulist !important;
+  appearance: menulist !important;
+  background-image: none !important;
+  padding-right: 12px !important;
+  position: static !important;
+}
+
+/* Fix for select options visibility */
+.cas-form-field select option {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+/* Add these styles at the end of the file to override any nice-select styling */
+
+/* Prevent nice-select from being applied to our select elements */
+.cas-form-field .nice-select,
+.nice-select.cas-form-select {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  position: absolute !important;
+  pointer-events: none !important;
+  z-index: -1 !important;
+}
+
+/* Make sure our original select is visible */
+.cas-form-field select,
+.cas-form-select {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  position: static !important;
+  width: 100% !important;
+  height: auto !important;
+  padding: 10px 12px !important;
+  border: 1px solid #ddd !important;
+  border-radius: var(--border-radius, 4px) !important;
+  font-size: 16px !important;
+  line-height: 1.5 !important;
+  color: var(--text-color, #333) !important;
+  background-color: #fff !important;
+  -webkit-appearance: menulist !important;
+  -moz-appearance: menulist !important;
+  appearance: menulist !important;
+  background-image: none !important;
+  z-index: 999 !important;
+}
+
+/* Make sure our select options are visible */
+.cas-form-field select option {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  padding: 8px !important;
+  background-color: #fff !important;
+  color: var(--text-color, #333) !important;
+}
+
+/* Prevent any theme or plugin from hiding our selects */
+.cas-form-field .nice-select,
+.cas-form-field .select2-container {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  position: absolute !important;
+  pointer-events: none !important;
+  z-index: -1 !important;
+}
+
+/* Style for disabled selects */
+.cas-form-field select:disabled,
+.cas-form-select:disabled {
+  background-color: #f5f5f5 !important;
+  cursor: not-allowed !important;
+}
+
+/* Educational Information Section */
+#cas-undergraduate-fields,
+#cas-postgraduate-fields {
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid #eee;
+}
+
+#cas-undergraduate-fields h4,
+#cas-postgraduate-fields h4 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 18px;
+  color: var(--text-color, #333);
+}
+
+/* Homepage Button */
+.cas-home-button {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: var(--primary-color, #4a90e2);
+  color: var(--button-text-color, #fff);
+  text-decoration: none;
+  border-radius: var(--border-radius, 4px);
+  margin-top: 15px;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.cas-home-button:hover {
+  background-color: var(--primary-color-darker, #3a80d2);
+  color: var(--button-text-color, #fff);
+  text-decoration: none;
+}
+
+.cas-form-success {
+  text-align: center;
+  padding: 20px;
+}

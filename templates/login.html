@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Log In — ASSEMBLE Hackathon</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}">
+
+  <style>
+    .auth-copy {
+      position: relative;
+      z-index: 2;
+    }
+
+    .remember-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--graphite);
+    }
+
+    .remember-row input {
+      width: auto;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="auth-shell">
+    <div class="auth-visual">
+      <div class="img-slot slot-bleed dim" data-label="Login background&#10;images/SUPERMAN AND BATMAN.jpg">
+        <img
+          src="{{ url_for('static', filename='images/SUPERMAN AND BATMAN.jpg') }}"
+          alt=""
+          class="img-background"
+        >
+      </div>
+
+      <a href="{{ url_for('index') }}" class="brand">
+        <span class="dot"></span>ASSEMBLE
+      </a>
+
+      <div class="auth-copy">
+        <div class="quote">
+          “With great <span>power</span> comes a six-hour deadline.”
+        </div>
+        <div class="quote-by">— EVERY VIBE CODER, PROBABLY</div>
+      </div>
+    </div>
+
+    <div class="auth-form-side">
+      <div class="auth-form">
+        <a href="{{ url_for('index') }}" class="back-home">← Back to site</a>
+
+        <div class="eyebrow">Squad Access</div>
+        <h1>Log In</h1>
+        <p class="sub">
+          Log in as the squad leader to access team registration, payment and event updates.
+        </p>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            <div class="form-messages" role="alert" aria-live="polite">
+              {% for category, message in messages %}
+                <div class="form-message {{ category }}">{{ message }}</div>
+              {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
+
+        <form
+          id="login-form"
+          method="post"
+          action="{{ url_for('login') }}"
+        >
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+          <div class="field" id="f-email">
+            <label for="email">Email</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value="{{ request.form.get('email', '') }}"
+              placeholder="squad.lead@college.edu"
+              autocomplete="email"
+              required
+              autofocus
+            >
+            <div class="field-error">Enter a valid email address.</div>
+          </div>
+
+          <div class="field" id="f-password">
+            <label for="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="••••••••"
+              autocomplete="current-password"
+              minlength="8"
+              required
+            >
+            <div class="field-error">Password must be at least 8 characters.</div>
+          </div>
+
+          <div class="form-foot">
+            <label class="remember-row">
+              <input type="checkbox" id="remember" name="remember">
+              Remember me
+            </label>
+            <a href="#" id="forgot-link">Forgot password?</a>
+          </div>
+
+          <div style="margin-top: 28px;">
+            <button type="submit" class="btn btn-primary btn-block">
+              Log In →
+            </button>
+          </div>
+        </form>
+
+        <div class="divider">New Leader</div>
+        <a href="{{ url_for('register') }}" class="btn btn-ghost btn-block">
+          Create an Account
+        </a>
+
+        <p class="field-hint" style="margin-top: 26px; text-align: center;">
+          Team registration becomes available after you log in.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  <script>
+    const forgotLink = document.getElementById("forgot-link");
+
+    if (forgotLink) {
+      forgotLink.addEventListener("click", function (event) {
+        event.preventDefault();
+
+        if (typeof showToast === "function") {
+          showToast(
+            "Coming Next",
+            "Password reset will be connected after login setup."
+          );
+        }
+      });
+    }
+  </script>
+</body>
+</html>

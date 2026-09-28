@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Account — ASSEMBLE Hackathon</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}">
+</head>
+
+<body>
+  <div class="auth-shell">
+    <div class="auth-visual">
+      <div
+        class="img-slot slot-bleed dim"
+        data-label="Register background&#10;images/marvel.jpg"
+      >
+        <img
+          src="{{ url_for('static', filename='images/marvel.jpg') }}"
+          alt="Marvel superheroes assembled together"
+          class="hero-img"
+        >
+      </div>
+
+      <a
+        href="{{ url_for('index') }}"
+        class="brand"
+        style="position: relative; z-index: 2;"
+      >
+        <span class="dot"></span>ASSEMBLE
+      </a>
+
+      <div style="position: relative; z-index: 2;">
+        <div class="quote">
+          Every squad that <span>assembles</span> begins with a leader.
+        </div>
+        <div class="quote-by">CREATE ACCOUNT · LOG IN · REGISTER SQUAD</div>
+      </div>
+    </div>
+
+    <div class="auth-form-side">
+      <div class="auth-form" style="max-width: 480px;">
+        <a href="{{ url_for('index') }}" class="back-home">← Back to site</a>
+
+        <div class="eyebrow">Leader Enlistment</div>
+        <h1>Create Account</h1>
+        <p class="sub">
+          Create the squad leader account. After registration, log in to access
+          team registration and payment.
+        </p>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            <div class="form-messages" role="alert" aria-live="polite">
+              {% for category, message in messages %}
+                <div class="form-message {{ category }}">{{ message }}</div>
+              {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
+
+        <form
+          id="register-form"
+          method="post"
+          action="{{ url_for('register') }}"
+        >
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+          <div class="field" id="f-full-name">
+            <label for="full_name">Full Name</label>
+            <input
+              type="text"
+              id="full_name"
+              name="full_name"
+              value="{{ request.form.get('full_name', '') }}"
+              placeholder="Squad leader's full name"
+              minlength="2"
+              autocomplete="name"
+              required
+              autofocus
+            >
+            <div class="field-error">Enter your full name.</div>
+          </div>
+
+          <div class="field" id="f-email">
+            <label for="email">Email Address</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value="{{ request.form.get('email', '') }}"
+              placeholder="you@college.edu"
+              autocomplete="email"
+              required
+            >
+            <div class="field-error">Enter a valid email address.</div>
+          </div>
+
+          <div class="field-row">
+            <div class="field" id="f-phone">
+              <label for="phone">Contact Number</label>
+              <input
+                type="tel"
+                id="phone"
+                name="phone"
+                value="{{ request.form.get('phone', '') }}"
+                placeholder="10-digit mobile"
+                inputmode="numeric"
+                pattern="[6-9][0-9]{9}"
+                maxlength="10"
+                autocomplete="tel"
+                required
+              >
+              <div class="field-error">Enter a valid 10-digit mobile number.</div>
+            </div>
+
+            <div class="field" id="f-college">
+              <label for="college_name">College / University</label>
+              <input
+                type="text"
+                id="college_name"
+                name="college_name"
+                value="{{ request.form.get('college_name', '') }}"
+                placeholder="Institute name"
+                minlength="2"
+                autocomplete="organization"
+                required
+              >
+              <div class="field-error">Enter your college or university.</div>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <div class="field" id="f-password">
+              <label for="password">Password</label>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Minimum 8 characters"
+                minlength="8"
+                autocomplete="new-password"
+                required
+              >
+              <div class="field-error">Password must contain at least 8 characters.</div>
+            </div>
+
+            <div class="field" id="f-confirm-password">
+              <label for="confirm_password">Confirm Password</label>
+              <input
+                type="password"
+                id="confirm_password"
+                name="confirm_password"
+                placeholder="Enter password again"
+                minlength="8"
+                autocomplete="new-password"
+                required
+              >
+              <div class="field-error">The passwords must match.</div>
+            </div>
+          </div>
+
+         
+          <div style="margin-top: 28px;">
+            <button type="submit" class="btn btn-primary btn-block">
+              Create Account →
+            </button>
+          </div>
+        </form>
+
+        <p class="field-hint" style="margin-top: 22px; text-align: center;">
+          Already registered? <a href="{{ url_for('login') }}">Log in</a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  <script>
+    const password = document.getElementById("password");
+    const confirmation = document.getElementById("confirm_password");
+
+    function validatePasswordMatch() {
+      confirmation.setCustomValidity(
+        password.value === confirmation.value ? "" : "Passwords do not match"
+      );
+    }
+
+    password.addEventListener("input", validatePasswordMatch);
+    confirmation.addEventListener("input", validatePasswordMatch);
+  </script>
+</body>
+</html>

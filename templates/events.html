@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>College Events — ASSEMBLE 2026</title>
+  <meta name="description" content="Explore all college events at ASSEMBLE 2026.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/events.css') }}">
+</head>
+<body>
+  <div class="event-glow glow-one"></div>
+  <div class="event-glow glow-two"></div>
+
+  <header class="events-nav">
+    <a class="events-brand" href="{{ url_for('index') }}"><span></span>ASSEMBLE</a>
+
+    <button class="menu-toggle" type="button" id="events-menu-toggle" aria-label="Open navigation" aria-expanded="false" aria-controls="events-links">
+      <span></span><span></span><span></span>
+    </button>
+
+    <nav class="events-links" id="events-links" aria-label="Event navigation">
+      <a href="{{ url_for('college_events') }}">Events</a>
+      <a href="#announcements">Announcements</a>
+      <a href="{{ url_for('rules_and_regulations') }}">Rules & Regulations</a>
+      <a href="{{ url_for('domains') }}">Domains</a>
+      <a href="{{ url_for('timeline') }}">Timeline</a>
+      {% if session.get('user_id') %}<a href="{{ url_for('dashboard') }}">Dashboard</a>{% else %}<a href="{{ url_for('login') }}">Log In</a>{% endif %}
+    </nav>
+  </header>
+
+  <main>
+    <section class="events-hero">
+      <div class="hero-grid"></div>
+      <div class="events-hero-copy">
+        <span class="events-kicker">MACFIESTA / COLLEGE ARENA</span>
+        <h1>Choose Your<br><em>Battle.</em></h1>
+        <p>Thirteen events. One arena. Bring your code, strategy, creativity, performance and nerve.</p>
+        <a href="#event-catalog" class="hero-button">Explore Events <span>↓</span></a>
+      </div>
+      <div class="hero-scoreboard">
+        <span>Event Intelligence</span>
+        <div><strong>{{ events | length }}</strong><small>College Events</small></div>
+        <div><strong>₹{{ '{:,}'.format(total_prize) }}</strong><small>Total Prize Pool</small></div>
+        <div><strong>10:00</strong><small>Action Begins</small></div>
+      </div>
+    </section>
+
+    <section class="catalog-shell" id="event-catalog">
+      <div class="catalog-heading">
+        <div><span class="events-kicker">The Complete Roster</span><h2>College Events</h2></div>
+        <p id="event-result-count">{{ events | length }} events available</p>
+      </div>
+
+      <div class="event-tools">
+        <label class="event-search"><span>⌕</span><input id="event-search" type="search" placeholder="Search event or competition..." autocomplete="off"></label>
+        <div class="category-filters" aria-label="Filter events">
+          <button class="active" type="button" data-category="all">All</button>
+          {% for category in categories %}<button type="button" data-category="{{ category | lower }}">{{ category }}</button>{% endfor %}
+        </div>
+      </div>
+
+      <div class="event-grid" id="event-grid">
+        {% for event in events %}
+          <article class="event-card accent-{{ event.accent }}" data-name="{{ (event.name ~ ' ' ~ event.type) | lower }}" data-category="{{ event.category | lower }}">
+            <div class="card-top"><span class="event-number">{{ event.number }}</span><span class="event-category">{{ event.category }}</span></div>
+            <div class="event-symbol">{{ event.type[0] }}</div>
+            <span class="event-type">{{ event.type }}</span>
+            <h3>{{ event.name }}</h3>
+            <p class="event-tagline">“{{ event.tagline }}”</p>
+            <div class="event-meta">
+              <div><small>Starts</small><strong>{{ event.time }}</strong></div>
+              <div><small>Registration</small><strong>₹{{ event.fee }}</strong></div>
+              <div><small>Prize Pool</small><strong>₹{{ '{:,}'.format(event.prize) }}</strong></div>
+            </div>
+            <button class="event-details-button" type="button" data-event-index="{{ loop.index0 }}">View Event Details <span>↗</span></button>
+          </article>
+        {% endfor %}
+      </div>
+
+      <div class="no-events" id="no-events" hidden><span>◎</span><h3>No events detected</h3><p>Try a different search or category.</p></div>
+    </section>
+  </main>
+
+  <dialog class="event-dialog" id="event-dialog">
+    <button class="dialog-close" type="button" aria-label="Close event details">×</button>
+    <span class="events-kicker" id="dialog-category"></span>
+    <h2 id="dialog-name"></h2>
+    <p class="dialog-type" id="dialog-type"></p>
+    <blockquote id="dialog-tagline"></blockquote>
+    <div class="dialog-stats">
+      <div><small>Starting Time</small><strong id="dialog-time"></strong></div>
+      <div><small>Registration</small><strong id="dialog-fee"></strong></div>
+      <div><small>Prize Pool</small><strong id="dialog-prize"></strong></div>
+    </div>
+    {% if session.get('user_id') %}<a href="{{ url_for('dashboard') }}">Return to Dashboard →</a>{% else %}<a href="{{ url_for('login') }}">Log In to ASSEMBLE →</a>{% endif %}
+  </dialog>
+
+  <script id="event-data" type="application/json">{{ events | tojson }}</script>
+  <script src="{{ url_for('static', filename='js/events.js') }}"></script>
+  <script>
+    // Mobile nav toggle (self-contained, doesn't depend on events.js)
+    (function () {
+      var toggle = document.getElementById('events-menu-toggle');
+      var nav = document.getElementById('events-links');
+      if (!toggle || !nav) return;
+
+      function closeNav() {
+        nav.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
+      }
+
+      toggle.addEventListener('click', function () {
+        var isOpen = nav.classList.toggle('open');
+        toggle.setAttribute('aria-expanded', String(isOpen));
+      });
+
+      nav.querySelectorAll('a').forEach(function (link) {
+        link.addEventListener('click', closeNav);
+      });
+
+      document.addEventListener('click', function (e) {
+        if (!nav.classList.contains('open')) return;
+        if (nav.contains(e.target) || toggle.contains(e.target)) return;
+        closeNav();
+      });
+
+      window.addEventListener('resize', function () {
+        if (window.innerWidth > 1000) closeNav();
+      });
+    })();
+  </script>
+</body>
+</html>

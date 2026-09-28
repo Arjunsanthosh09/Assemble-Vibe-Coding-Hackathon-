@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MACFIESTA — The Fest of MACFAST</title>
+  <meta name="description"
+    content="MACFIESTA is the annual cultural-technical fest of MACFAST college — hosted alongside the ASSEMBLE hackathon." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/macfiesta.css') }}" />
+</head>
+
+<body>
+  <header class="nav">
+    <div class="wrap nav-inner">
+      <a href="{{ url_for('index') }}" class="brand"><span class="dot"></span>ASSEMBLE</a>
+      <nav class="nav-links">
+        <a href="{{ url_for('index') }}">Home</a>
+        <a href="{{ url_for('index') }}#domains">Domains</a>
+        <a href="{{ url_for('index') }}#timeline">Timeline</a>
+        <a href="{{ url_for('index') }}#prizes">Prizes</a>
+        <a href="{{ url_for('macfiesta') }}" class="is-active">MACFIESTA</a>
+        <a href="{{ url_for('index') }}#contact">Contact</a>
+      </nav>
+      <div class="nav-cta">
+        <a href="{{ url_for('login') }}" class="btn btn-ghost btn-sm">Log In</a>
+        <a href="{{ url_for('register') }}" class="btn btn-primary btn-sm">Register Squad</a>
+      </div>
+      <button class="nav-toggle" aria-label="Toggle menu">☰</button>
+    </div>
+  </header>
+
+  <!-- ============ HERO ============ -->
+  <section class="fiesta-hero">
+    <div class="img-slot slot-bleed dim" data-label="Fest background&#10;images/macfiesta/hero-bg.jpg">
+      <img src="{{ url_for('static', filename='images/macfiesta/hero-bg.jpg') }}" alt="" onerror="this.parentElement.style.display='none'" />
+    </div>
+
+    <div class="img-slot fiesta-hero-cutout" data-label="Fest mascot / cutout&#10;images/macfiesta/cutout.png">
+      <img src="{{ url_for('static', filename='images/macfiesta/cutout.png') }}" alt="" onerror="this.remove()" />
+    </div>
+
+    <div class="wrap fiesta-hero-inner">
+      <div class="hero-tag">
+        <span class="pulse"></span> SIGNAL DETECTED · ANNUAL FEST · MACFAST CAMPUS
+      </div>
+      <h1>MACFIESTA<span class="sub">The Fest of MACFAST College</span></h1>
+      <p class="fiesta-desc">
+        One campus. One weekend. Everything on fire (in a good way). MACFIESTA
+        is the flagship fest of MACFAST — a collision of culture, code,
+        music, and competition — and the stage where the ASSEMBLE hackathon
+        goes live.
+      </p>
+      <div class="hero-actions">
+        <a href="{{ url_for('index') }}" class="btn btn-primary">Join the Hackathon →</a>
+        <a href="#events" class="btn btn-ghost">Explore Events</a>
+      </div>
+
+      <div class="fiesta-meta">
+        <div class="item">
+          <div class="k">Host Campus</div>
+          <div class="v">MACFAST College</div>
+        </div>
+        <div class="item">
+          <div class="k">Flagship Event</div>
+          <div class="v">ASSEMBLE Hackathon</div>
+        </div>
+        <div class="item">
+          <div class="k">Vibe</div>
+          <div class="v">Culture × Code × Chaos</div>
+        </div>
+        <div class="item">
+          <div class="k">Entry</div>
+          <div class="v">Open to all colleges</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-fade"></div>
+  </section>
+
+  <!-- ============ ABOUT THE COLLEGE ============ -->
+  <section id="macfast">
+    <div class="wrap macfast-grid">
+      <div class="macfast-text">
+        <div class="eyebrow-row">
+          <div class="eyebrow">The Host Campus</div>
+          <div class="codename-badge">Where the fiesta lives</div>
+        </div>
+        <h2 class="section-title">MACFAST —<br /><span class="accent">built different.</span></h2>
+        <p>
+          <b>MACFAST</b> is a campus that refuses to sit still — a community
+          of builders, performers, debaters, and problem-solvers. Its
+          corridors run on ambition and filter coffee, and every year it
+          opens its gates to students from across the region for the biggest
+          celebration on its calendar: <b>MACFIESTA</b>.
+        </p>
+        <div class="quote-block">
+          "A campus isn't its buildings. It's the energy of the people who fill them — and MACFAST has plenty."
+        </div>
+        <div class="macfast-facts">
+          <div class="fact">
+            <div class="n">1000s</div>
+            <div class="l">Students on campus</div>
+          </div>
+          <div class="fact">
+            <div class="n">3 Days</div>
+            <div class="l">Of non-stop fiesta</div>
+          </div>
+          <div class="fact">
+            <div class="n">20+</div>
+            <div class="l">Events &amp; competitions</div>
+          </div>
+          <div class="fact">
+            <div class="n">Open</div>
+            <div class="l">To every college</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="macfast-visual">
+        <!-- Replace this image with your own campus photo -->
+        <div class="img-slot has-img" data-label="Campus photo&#10;images/macfiesta/campus.jpg">
+          <img src="{{ url_for('static', filename='images/macfiesta/campus.jpg') }}" alt="MACFAST campus"
+            onerror="this.parentElement.classList.remove('has-img')" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CAMPUS PHOTO WALL ============ -->
+  <section id="campus-gallery" class="section-alt halftone">
+    <div class="img-slot slot-bleed dim" data-label="Campus section background&#10;images/macfiesta/campus-bg.jpg">
+      <img src="{{ url_for('static', filename='images/macfiesta/campus-bg.jpg') }}" alt="" onerror="this.parentElement.style.display='none'" />
+    </div>
+    <div class="wrap reveal">
+      <div class="eyebrow">The Campus</div>
+      <h2 class="section-title">MACFAST, <span class="accent">up close.</span></h2>
+      
+      <div class="fiesta-gallery fiesta-gallery--wide">
+        <div class="img-slot has-img" data-label="images/macfiesta/campus-1.jpg">
+          <img src="{{ url_for('static', filename='images/macfiesta/101.jpg') }}" alt="MACFAST campus 1"
+            onerror="this.parentElement.classList.remove('has-img')" />
+        </div>
+        <div class="img-slot has-img" data-label="images/macfiesta/campus-2.jpg">
+          <img src="{{ url_for('static', filename='images/macfiesta/100.jpg') }}" alt="MACFAST campus 2"
+            onerror="this.parentElement.classList.remove('has-img')" />
+        </div>
+        <div class="img-slot has-img" data-label="images/macfiesta/campus-3.jpg">
+          <img src="{{ url_for('static', filename='images/macfiesta/12.jpg') }}" alt="MACFAST campus 3"
+            onerror="this.parentElement.classList.remove('has-img')" />
+        </div>
+        <div class="img-slot has-img" data-label="images/macfiesta/campus-4.jpg">
+          <img src="{{ url_for('static', filename='images/macfiesta/11.jpg') }}" alt="MACFAST campus 4"
+            onerror="this.parentElement.classList.remove('has-img')" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ LAST YEAR'S MACFIESTA — SCREENSHOTS ============ -->
+  <section id="lastyear">
+    <div class="wrap reveal">
+      <div class="eyebrow">Throwback · Archives</div>
+      <h2 class="section-title">Last year's <span class="accent">MACFIESTA.</span></h2>
+      
+
+      <!-- big featured shots -->
+      <div class="fiesta-gallery fiesta-gallery--wide">
+        <div class="img-slot has-img" data-label="images/macfiesta/lastyear-1.jpg">
+          <img src="{{ url_for('static', filename='images/macfiesta/1.jpg') }}" alt="MACFIESTA last year 1"
+            onerror="this.parentElement.classList.remove('has-img')" />
+        </div>
+        <div class="img-slot has-img" data-label="images/macfiesta/lastyear-2.jpg">
+          <img src="{{ url_for('static', filename='images/macfiesta/2.jpg') }}" alt="MACFIESTA last year 2"
+            onerror="this.parentElement.classList.remove('has-img')" />
+        </div>
+     
+        <div class="img-slot has-img" data-label="images/macfiesta/lastyear-3.jpg">
+          <img src="{{ url_for('static', filename='images/macfiesta/3.jpg') }}" alt="MACFIESTA last year 3"
+            onerror="this.parentElement.classList.remove('has-img')" />
+        </div>
+        <div class="img-slot has-img" data-label="images/macfiesta/lastyear-4.jpg">
+          <img src="{{ url_for('static', filename='images/macfiesta/4.jpg') }}" alt="MACFIESTA last year 4"
+            onerror="this.parentElement.classList.remove('has-img')" />
+        </div>
+        <div class="img-slot has-img" data-label="images/macfiesta/lastyear-5.jpg">
+          <img src="{{ url_for('static', filename='images/macfiesta/10.jpg') }}" alt="MACFIESTA last year 5"
+            onerror="this.parentElement.classList.remove('has-img')" />
+        </div>
+        <div class="img-slot has-img" data-label="images/macfiesta/lastyear-6.jpg">
+          <img src="{{ url_for('static', filename='images/macfiesta/6.jpg') }}" alt="MACFIESTA last year 6"
+            onerror="this.parentElement.classList.remove('has-img')" />
+        </div>
+        <div class="img-slot has-img" data-label="images/macfiesta/lastyear-6.jpg">
+          <img src="{{ url_for('static', filename='images/macfiesta/7.jpg') }}" alt="MACFIESTA last year 6"
+            onerror="this.parentElement.classList.remove('has-img')" />
+        </div>
+        <div class="img-slot has-img" data-label="images/macfiesta/lastyear-6.jpg">
+          <img src="{{ url_for('static', filename='images/macfiesta/9.jpg') }}" alt="MACFIESTA last year 6"
+            onerror="this.parentElement.classList.remove('has-img')" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============ CTA ============ -->
+  <section class="section-alt">
+    <div class="wrap">
+      <div class="fiesta-cta reveal">
+        <div class="eyebrow eyebrow-center">See You On Campus</div>
+        <h2>Ready for the <span class="accent">fiesta?</span></h2>
+        <p>
+          Register for ASSEMBLE and your MACFIESTA pass is already in the
+          bag. One registration — two events.
+        </p>
+        <a href="{{ url_for('register') }}" class="btn btn-primary">Register Your Squad →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer>
+    <div class="img-slot slot-bleed dim" data-label="Footer background&#10;images/footer-bg.jpg">
+      <img src="{{ url_for('static', filename='images/marvelvsdc.jpg') }}" alt="" />
+    </div>
+    <div class="wrap">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="{{ url_for('index') }}" class="brand"><span class="dot"></span>ASSEMBLE</a>
+          <p>
+            A 6-hour vibe coding hackathon — the flagship event of MACFIESTA,
+            the annual fest of MACFAST.
+          </p>
+        </div>
+        <div class="footer-col">
+          <h4>Fest</h4>
+          <a href="{{ url_for('macfiesta') }}#macfast">About MACFAST</a>
+          <a href="{{ url_for('macfiesta') }}#campus-gallery">Campus Gallery</a>
+          <a href="{{ url_for('macfiesta') }}#lastyear">Last Year</a>
+        </div>
+        <div class="footer-col">
+          <h4>Participate</h4>
+          <a href="{{ url_for('register') }}">Register Squad</a>
+          <a href="{{ url_for('login') }}">Log In</a>
+          <a href="{{ url_for('index') }}#eligibility">Eligibility</a>
+        </div>
+        <div class="footer-col">
+          <h4>Legal</h4>
+          <a href="#">Code of Conduct</a>
+          <a href="#">Terms</a>
+          <a href="#">Privacy</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 MACFIESTA · MACFAST College · Powered by ASSEMBLE · special credits : Bibin Biju Varghese and Aleena Sunny </span>
+        <div class="socials">
+          <a href="#">IG</a><a href="#">X</a><a href="#">IN</a><a href="#">DC</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+
+</html>

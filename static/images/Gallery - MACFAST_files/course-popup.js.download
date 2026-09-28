@@ -1,0 +1,37 @@
+jQuery(document).ready(function($) {
+    $('.course-button').click(function(e) {
+        e.preventDefault(); // Prevent default link behavior
+        var courseId = $(this).data('course-id');
+        console.log('Course ID:', courseId);
+        
+        $.ajax({
+            url: courseData.ajax_url,
+            type: 'POST',
+            data: {
+                action: 'get_course_details',
+                nonce: courseData.nonce,
+                course_id: courseId
+            },
+            dataType: 'json',
+            success: function(response) {
+                console.log('AJAX Success Response:', response);
+                if (response.success) {
+                    $('#popup-course-name').text(response.data.name || 'No Name');
+                    $('#popup-eligibility').text(response.data.eligibility || 'No Eligibility');
+                    $('#popup-details-btn')
+                        .attr('href', response.data.details_url || '#')
+                        .text('View Details');
+                    
+                    elementorProFrontend.modules.popup.showPopup({ id: courseData.popup_id });
+                } else {
+                    alert('Error: ' + (response.data.message || 'No course found'));
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('AJAX Error - Status:', status, 'Error:', error);
+                console.log('Response Text:', xhr.responseText);
+                alert('Failed to load course details. Check console for details.');
+            }
+        });
+    });
+});

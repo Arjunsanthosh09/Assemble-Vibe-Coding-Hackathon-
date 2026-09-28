@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rules & Regulations — ASSEMBLE Hackathon</title>
+    <meta
+      name="description"
+      content="Official participant rules and judging criteria for the ASSEMBLE hackathon."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/rules.css') }}"
+    />
+  </head>
+  <body>
+    <div class="rules-glow glow-red"></div>
+    <div class="rules-glow glow-cyan"></div>
+    <header class="rules-nav">
+      <a class="rules-brand" href="{{ url_for('index') }}"
+        ><span></span>ASSEMBLE</a
+      >
+
+      <button class="menu-toggle" type="button" id="rules-menu-toggle" aria-label="Open navigation" aria-expanded="false" aria-controls="rules-links">
+        <span></span><span></span><span></span>
+      </button>
+
+      <nav id="rules-links" aria-label="Rules navigation">
+        <a href="{{ url_for('college_events') }}">Events</a>
+        <a href="#announcements">Announcements</a>
+        <a href="{{ url_for('rules_and_regulations') }}" class="active">Rules & Regulations</a>
+        <a href="{{ url_for('domains') }}">Domains</a>
+        <a href="{{ url_for('timeline') }}">Timeline</a>{% if session.get('user_id') %}<a href="{{ url_for('dashboard') }}"
+            >Dashboard</a
+          >{% else %}<a href="{{ url_for('login') }}">Log In</a>{% endif %}
+      </nav>
+    </header>
+
+    <main>
+      <section class="rules-hero">
+        <div class="hero-grid"></div>
+        <div class="rules-hero-copy">
+          <span class="rules-kicker">ASSEMBLE / OFFICIAL PROTOCOL</span>
+          <h1>Rules &<br /><em>Regulations.</em></h1>
+          <p>
+            Read the complete protocol before entering the arena. Registration
+            confirms that every team member accepts these rules.
+          </p>
+        </div>
+        <aside class="hero-brief">
+          <span>Mission Essentials</span>
+          <div><strong>3</strong><small>Maximum team members</small></div>
+          <div><strong>6H</strong><small>Build duration</small></div>
+          <div><strong>100</strong><small>Judging points</small></div>
+        </aside>
+      </section>
+
+      <section class="critical-strip">
+        <div><span>01</span><strong>Bring your own laptop</strong></div>
+        <div><span>02</span><strong>Bring your laptop charger</strong></div>
+        <div>
+          <span>03</span
+          ><strong>College ID or clear ID photo is mandatory</strong>
+        </div>
+        <div>
+          <span>04</span><strong>Do not bring a completed project</strong>
+        </div>
+      </section>
+
+      <section class="rules-layout">
+        <div class="rules-main">
+          <article class="rule-section">
+            <div class="section-number">01</div>
+            <div>
+              <span class="rules-kicker">Entry Protocol</span>
+              <h2>Eligibility & Team</h2>
+              <ol class="rule-list">
+                <li>Only registered college students may participate.</li>
+                <li>
+                  A team can contain a maximum of
+                  <strong>three members, including the team leader</strong>.
+                </li>
+                <li>
+                  Participants must compete only with the members listed during
+                  registration. Member substitutions require organizer approval.
+                </li>
+                <li>
+                  Every participant must carry a valid college ID card. A clear
+                  photograph or digital copy of the ID card is accepted if the
+                  original is unavailable.
+                </li>
+                <li>
+                  Teams must report before the announced reporting time. Late
+                  entry may reduce the available build time.
+                </li>
+              </ol>
+            </div>
+          </article>
+
+          <article class="rule-section">
+            <div class="section-number">02</div>
+            <div>
+              <span class="rules-kicker">Equipment</span>
+              <h2>What You Must Bring</h2>
+              <ol class="rule-list">
+                <li>
+                  Every team must bring at least one working laptop suitable for
+                  development and demonstration.
+                </li>
+                <li>
+                  Bring the required laptop chargers, adapters, cables and any
+                  special hardware needed for your solution.
+                </li>
+                <li>
+                  <strong
+                    >Wi-Fi and charging facilities will be provided</strong
+                  >
+                  at the venue. Because these are shared facilities, keep an
+                  offline copy of important tools and dependencies.
+                </li>
+                <li>
+                  Participants are responsible for their devices, accounts,
+                  files and personal belongings. Organizers are not responsible
+                  for damage or data loss.
+                </li>
+              </ol>
+            </div>
+          </article>
+
+          <article class="rule-section originality">
+            <div class="section-number">03</div>
+            <div>
+              <span class="rules-kicker">Originality Check</span>
+              <h2>Build During the Hackathon</h2>
+              <ol class="rule-list">
+                <li>
+                  Teams must not submit an already completed, previously
+                  published or previously presented project.
+                </li>
+                <li>
+                  The main application and its core features must be developed
+                  during the hackathon period.
+                </li>
+                <li>
+                  Teams may plan an idea beforehand, but they must not arrive
+                  with a finished solution.
+                </li>
+                <li>
+                  Public libraries, frameworks, APIs, SDKs, open-source
+                  packages, UI components and AI development tools are allowed
+                  when their use is disclosed.
+                </li>
+                <li>
+                  Judges may inspect source files, repository history and
+                  timestamps, or ask technical questions to confirm that the
+                  work belongs to the team.
+                </li>
+                <li>
+                  Plagiarism, copying another team, false claims or hiding
+                  pre-built work may result in immediate disqualification.
+                </li>
+              </ol>
+            </div>
+          </article>
+
+          <article class="rule-section prototype">
+            <div class="section-number">04</div>
+            <div>
+              <span class="rules-kicker">Expected Output</span>
+              <h2>A Prototype Is Accepted</h2>
+              <p class="section-intro">
+                The final project does not need to be production-ready. A
+                convincing working prototype is enough.
+              </p>
+              <ol class="rule-list">
+                <li>
+                  The prototype should demonstrate the main problem, solution
+                  and essential user flow.
+                </li>
+                <li>
+                  Mock data, simulated hardware responses or limited features
+                  are acceptable when the team clearly identifies what is
+                  simulated.
+                </li>
+                <li>
+                  At least one important feature should work during the final
+                  demonstration.
+                </li>
+                <li>
+                  Teams must honestly explain incomplete features, technical
+                  limitations and planned improvements.
+                </li>
+                <li>
+                  A concept presentation without a working demonstration may
+                  receive fewer functionality marks.
+                </li>
+              </ol>
+            </div>
+          </article>
+
+          <article class="rule-section">
+            <div class="section-number">05</div>
+            <div>
+              <span class="rules-kicker">Final Evaluation</span>
+              <h2>How to Present to the Judges</h2>
+              <div class="presentation-flow">
+                <div>
+                  <span>01</span><strong>Problem</strong>
+                  <p>Explain the real problem and affected users.</p>
+                </div>
+                <div>
+                  <span>02</span><strong>Solution</strong>
+                  <p>Show how your idea solves it differently.</p>
+                </div>
+                <div>
+                  <span>03</span><strong>Prototype</strong>
+                  <p>Demonstrate the core working flow.</p>
+                </div>
+                <div>
+                  <span>04</span><strong>Technology</strong>
+                  <p>Explain the stack, architecture and onsite work.</p>
+                </div>
+                <div>
+                  <span>05</span><strong>Impact</strong>
+                  <p>Describe feasibility, scalability and future scope.</p>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="rule-section">
+            <div class="section-number">06</div>
+            <div>
+              <span class="rules-kicker">Code of Conduct</span>
+              <h2>Fair Play & Safety</h2>
+              <ol class="rule-list">
+                <li>
+                  Behave respectfully toward other teams, volunteers, faculty
+                  and judges.
+                </li>
+                <li>
+                  Do not access another participant's device, account, source
+                  code or data.
+                </li>
+                <li>
+                  Projects must not contain illegal, discriminatory, offensive
+                  or unsafe content.
+                </li>
+                <li>
+                  Follow all venue, network, electrical and safety instructions.
+                </li>
+                <li>
+                  The judges' decision is final. Organizers may clarify rules
+                  when required for fair conduct.
+                </li>
+              </ol>
+            </div>
+          </article>
+        </div>
+
+        <aside class="judging-panel">
+          <span class="rules-kicker">100-Point Evaluation</span>
+          <h2>Judging Criteria</h2>
+          <div class="score-list">
+            <div>
+              <span>Innovation & Originality</span><strong>25</strong
+              ><i style="--score: 100%"></i>
+            </div>
+            <div>
+              <span>Functionality & Prototype</span><strong>25</strong
+              ><i style="--score: 100%"></i>
+            </div>
+            <div>
+              <span>Problem Relevance</span><strong>20</strong
+              ><i style="--score: 80%"></i>
+            </div>
+            <div>
+              <span>Technical Implementation</span><strong>15</strong
+              ><i style="--score: 60%"></i>
+            </div>
+            <div>
+              <span>User Experience & Presentation</span><strong>10</strong
+              ><i style="--score: 40%"></i>
+            </div>
+            <div>
+              <span>Impact & Scalability</span><strong>5</strong
+              ><i style="--score: 20%"></i>
+            </div>
+          </div>
+          <div class="judge-note">
+            <strong>Important</strong>
+            <p>
+              Judges evaluate what the team demonstrates and explains. A focused
+              working prototype can score better than a large but incomplete
+              project.
+            </p>
+          </div>
+        </aside>
+      </section>
+
+      <section class="final-checklist">
+        <div>
+          <span class="rules-kicker">Before You Leave Home</span>
+          <h2>Final Checklist</h2>
+        </div>
+        <ul>
+          <li>College ID or clear photo</li>
+          <li>Laptop and charger</li>
+          <li>Required adapters or hardware</li>
+          <li>Development tools installed</li>
+          <li>Offline dependency backup</li>
+          <li>Registered team details verified</li>
+        </ul>
+        {% if session.get('user_id') %}<a href="{{ url_for('dashboard') }}"
+          >Return to Dashboard →</a
+        >{% else %}<a href="{{ url_for('register') }}">Create Your Account →</a
+        >{% endif %}
+      </section>
+    </main>
+
+    <script>
+      // Mobile nav toggle (self-contained)
+      (function () {
+        var toggle = document.getElementById('rules-menu-toggle');
+        var nav = document.getElementById('rules-links');
+        if (!toggle || !nav) return;
+
+        function closeNav() {
+          nav.classList.remove('open');
+          toggle.setAttribute('aria-expanded', 'false');
+        }
+
+        toggle.addEventListener('click', function () {
+          var isOpen = nav.classList.toggle('open');
+          toggle.setAttribute('aria-expanded', String(isOpen));
+        });
+
+        nav.querySelectorAll('a').forEach(function (link) {
+          link.addEventListener('click', closeNav);
+        });
+
+        document.addEventListener('click', function (e) {
+          if (!nav.classList.contains('open')) return;
+          if (nav.contains(e.target) || toggle.contains(e.target)) return;
+          closeNav();
+        });
+
+        window.addEventListener('resize', function () {
+          if (window.innerWidth > 1000) closeNav();
+        });
+      })();
+    </script>
+  </body>
+</html>
